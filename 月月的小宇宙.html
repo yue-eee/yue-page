@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>囿于月白星紫，满心皆是马嘉祺 - 月月的小宇宙</title>
+    <style>
+        :root {
+            --moon-white: #e8eaf6;
+            --moon-white-soft: #d6dff0;
+            --star-purple: #7b3fa3;
+            --star-purple-light: #9b6fc0;
+            --star-purple-deep: #4a1a6b;
+            --star-purple-dark: #2d0f42;
+            --gold: #d4a843;
+            --gold-light: #f0d68a;
+            --text-light: #e0dce8;
+            --bg-deep: #0a0612;
+            --bg-card: rgba(30, 15, 50, 0.75);
+            --bg-card-hover: rgba(45, 20, 70, 0.85);
+            --glow-purple: rgba(123, 63, 163, 0.5);
+            --glow-gold: rgba(212, 168, 67, 0.4);
+            --font-cn: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', 'STHeiti', sans-serif;
+            --font-display: 'Georgia', 'Noto Serif SC', 'STSong', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-cn);
+            background: var(--bg-deep);
+            color: var(--text-light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* ============ STARRY BACKGROUND ============ */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.15;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.8);
+            }
+        }
+
+        /* ============ STAGE LIGHT BEAMS ============ */
+        .stage-lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .light-beam {
+            position: absolute;
+            bottom: -20%;
+            width: 6px;
+            background: linear-gradient(to top,
+                    transparent 0%,
+                    rgba(155, 111, 192, 0.15) 30%,
+                    rgba(212, 168, 67, 0.22) 50%,
+                    rgba(155, 111, 192, 0.08) 80%,
+                    transparent 100%);
+            border-radius: 3px;
+            animation: beamSway var(--sway-dur) ease-in-out infinite;
+            animation-delay: var(--sway-delay);
+            transform-origin: bottom center;
+            filter: blur(1px);
+        }
+
+        @keyframes beamSway {
+            0%,
+            100% {
+                transform: rotate(var(--angle-start)) scaleY(1);
+                opacity: 0.5;
+            }
+            25% {
+                transform: rotate(var(--angle-mid1)) scaleY(1.08);
+                opacity: 0.75;
+            }
+            50% {
+                transform: rotate(var(--angle-mid2)) scaleY(1);
+                opacity: 0.5;
+            }
+            75% {
+                transform: rotate(var(--angle-mid3)) scaleY(0.92);
+                opacity: 0.65;
+            }
+        }
+
+        /* ============ MAIN CONTAINER ============ */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            text-align: center;
+            padding: 80px 30px 60px;
+            position: relative;
+        }
+
+        .hero-moon {
+            display: inline-block;
+            font-size: 72px;
+            animation: moonGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(212, 168, 67, 0.6));
+            margin-bottom: 10px;
+        }
+
+        @keyframes moonGlow {
+            0%,
+            100% {
+                filter: drop-shadow(0 0 25px rgba(212, 168, 67, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 50px rgba(212, 168, 67, 0.85));
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            border: 1.5px solid var(--star-purple-light);
+            border-radius: 50px;
+            color: var(--moon-white-soft);
+            font-size: 14px;
+            letter-spacing: 4px;
+            margin-bottom: 24px;
+            background: rgba(123, 63, 163, 0.12);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 5vw, 46px);
+            font-weight: bold;
+            color: var(--moon-white);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 40px var(--glow-purple);
+            line-height: 1.4;
+        }
+
+        .hero-title .highlight {
+            color: var(--gold-light);
+            text-shadow: 0 0 40px var(--glow-gold);
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--star-purple-light);
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+        }
+
+        .hero-divider {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 24px auto;
+        }
+
+        .hero-quote {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: var(--moon-white-soft);
+            line-height: 2;
+            letter-spacing: 3px;
+        }
+
+        .hero-quote em {
+            font-style: normal;
+            color: var(--gold-light);
+        }
+
+        /* ============ BALLOON FLOATING ============ */
+        .balloon-float {
+            position: absolute;
+            font-size: 28px;
+            animation: floatUp var(--float-dur) ease-in-out infinite;
+            animation-delay: var(--float-delay);
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0%,
+            100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) translateX(12px) rotate(5deg);
+            }
+            50% {
+                transform: translateY(-35px) translateX(-8px) rotate(-3deg);
+            }
+            75% {
+                transform: translateY(-15px) translateX(-14px) rotate(4deg);
+            }
+        }
+
+        /* ============ SECTION STYLES ============ */
+        .section {
+            margin: 50px 0;
+            padding: 40px 35px;
+            background: var(--bg-card);
+            border: 1px solid rgba(155, 111, 192, 0.18);
+            border-radius: 20px;
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(74, 26, 107, 0.35);
+            border-color: rgba(155, 111, 192, 0.4);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(212, 168, 67, 0.5),
+                    transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .section:hover::before {
+            opacity: 1;
+        }
+
+        .section-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(22px, 3.5vw, 30px);
+            color: var(--moon-white);
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--star-purple-light);
+            letter-spacing: 4px;
+            margin-bottom: 28px;
+        }
+
+        .section-divider {
+            width: 50px;
+            height: 1.5px;
+            background: var(--star-purple);
+            margin-bottom: 28px;
+            border-radius: 1px;
+        }
+
+        /* ============ INTRO SECTION ============ */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .intro-avatar-wrap {
+            text-align: center;
+            position: relative;
+        }
+
+        .intro-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--star-purple), var(--star-purple-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin: 0 auto 16px;
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 40px var(--glow-purple), 0 0 80px rgba(123, 63, 163, 0.2);
+            position: relative;
+        }
+
+        .intro-avatar-ring {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            border: 2px dashed rgba(212, 168, 67, 0.35);
+            animation: ringRotate 20s linear infinite;
+        }
+
+        @keyframes ringRotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .intro-avatar-label {
+            font-size: 14px;
+            color: var(--gold-light);
+            letter-spacing: 3px;
+        }
+
+        .intro-info h3 {
+            font-size: 22px;
+            color: var(--moon-white);
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+
+        .intro-info .name-highlight {
+            color: var(--gold-light);
+            font-family: var(--font-display);
+            font-size: 26px;
+        }
+
+        .intro-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .intro-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            background: rgba(123, 63, 163, 0.2);
+            border: 1px solid rgba(155, 111, 192, 0.35);
+            color: var(--moon-white-soft);
+            transition: all 0.3s ease;
+        }
+
+        .intro-tag:hover {
+            background: rgba(123, 63, 163, 0.4);
+            border-color: var(--gold);
+            color: var(--gold-light);
+        }
+
+        .intro-tag.balloon-tag {
+            background: rgba(212, 168, 67, 0.12);
+            border-color: rgba(212, 168, 67, 0.4);
+            color: var(--gold-light);
+        }
+
+        .intro-desc {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 2;
+            letter-spacing: 1px;
+        }
+
+        .intro-desc strong {
+            color: var(--gold-light);
+        }
+
+        /* ============ STATS ROW ============ */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(155, 111, 192, 0.2);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .stat-item .stat-number {
+            font-family: var(--font-display);
+            font-size: 32px;
+            color: var(--gold-light);
+            font-weight: bold;
+            text-shadow: 0 0 20px var(--glow-gold);
+        }
+
+        .stat-item .stat-label {
+            font-size: 12px;
+            color: var(--star-purple-light);
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        /* ============ STORIES / GALLERY SECTION ============ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid rgba(155, 111, 192, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px rgba(74, 26, 107, 0.45);
+            border-color: rgba(212, 168, 67, 0.5);
+        }
+
+        .gallery-img-wrap {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-card:hover .gallery-img-wrap img {
+            transform: scale(1.08);
+        }
+
+        .gallery-img-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            background: linear-gradient(135deg, #1a0a2e, #2d1045, #1a0a2e);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .gallery-img-wrap img {
+            position: relative;
+            z-index: 1;
+        }
+
+        .gallery-img-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(10, 6, 18, 0.9));
+            z-index: 2;
+        }
+
+        .gallery-img-overlay .img-label {
+            font-size: 12px;
+            color: var(--gold-light);
+            letter-spacing: 2px;
+        }
+
+        .gallery-card-body {
+            padding: 18px;
+        }
+
+        .gallery-card-body h4 {
+            font-size: 16px;
+            color: var(--moon-white);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .gallery-card-body p {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.8;
+            letter-spacing: 1px;
+            opacity: 0.85;
+        }
+
+        .gallery-card-body .story-date {
+            font-size: 11px;
+            color: var(--star-purple-light);
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        /* ============ CONTACT SECTION ============ */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px;
+            border-radius: 14px;
+            background: rgba(123, 63, 163, 0.1);
+            border: 1px solid rgba(155, 111, 192, 0.2);
+            transition: all 0.35s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-card:hover {
+            background: rgba(123, 63, 163, 0.25);
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(74, 26, 107, 0.3);
+        }
+
+        .contact-icon {
+            font-size: 34px;
+            flex-shrink: 0;
+        }
+
+        .contact-info .contact-label {
+            font-size: 11px;
+            color: var(--star-purple-light);
+            letter-spacing: 2px;
+        }
+
+        .contact-info .contact-value {
+            font-size: 14px;
+            color: var(--moon-white);
+            letter-spacing: 1px;
+        }
+
+        /* ============ FOOTER ============ */
+        .site-footer {
+            text-align: center;
+            padding: 50px 20px 40px;
+            position: relative;
+        }
+
+        .footer-balloons {
+            font-size: 24px;
+            letter-spacing: 8px;
+            margin-bottom: 16px;
+            animation: floatUp 3s ease-in-out infinite;
+        }
+
+        .footer-theme {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--moon-white);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px var(--glow-purple);
+        }
+
+        .footer-signature {
+            font-size: 13px;
+            color: var(--star-purple-light);
+            letter-spacing: 3px;
+        }
+
+        .footer-ps {
+            font-size: 12px;
+            color: rgba(155, 111, 192, 0.5);
+            margin-top: 12px;
+            letter-spacing: 2px;
+        }
+
+        /* ============ SCROLL INDICATOR ============ */
+        .scroll-indicator {
+            text-align: center;
+            margin-top: 20px;
+            animation: bounceDown 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator span {
+            font-size: 28px;
+            color: var(--star-purple-light);
+        }
+
+        @keyframes bounceDown {
+            0%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(12px);
+                opacity: 1;
+            }
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .intro-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .intro-tags {
+                justify-content: center;
+            }
+            .section {
+                padding: 28px 20px;
+                margin: 32px 0;
+            }
+            .hero {
+                padding: 50px 16px 40px;
+            }
+            .hero-moon {
+                font-size: 50px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stats-row {
+                gap: 12px;
+            }
+            .stat-item .stat-number {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 22px;
+            }
+            .hero-quote {
+                font-size: 15px;
+            }
+        }
+
+        /* ============ SPARKLE ON CLICK ============ */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 18px;
+            animation: sparkleFade 1s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes sparkleFade {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.4);
+            }
+        }
+
+        /* ============ MUSIC NOTE PARTICLES ============ */
+        .music-note {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            animation: noteFloat 4s ease-in forwards;
+            z-index: 998;
+            opacity: 0;
+        }
+
+        @keyframes noteFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            20% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) translateX(var(--drift)) rotate(var(--spin));
+            }
+        }
+
+        /* ============ IMAGE LOADING FALLBACK ============ */
+        .gallery-img-wrap img.error-fallback {
+            display: none;
+        }
+
+        .gallery-img-wrap img.error-fallback+.gallery-img-fallback {
+            display: flex;
+        }
+
+        /* ============ SECTION NUMBER ============ */
+        .section-number {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-family: var(--font-display);
+            font-size: 56px;
+            color: rgba(155, 111, 192, 0.08);
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== STARRY BACKGROUND ==================== -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- ==================== STAGE LIGHTS ==================== -->
+    <div class="stage-lights" id="stageLights"></div>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <div class="main-container">
+
+        <!-- ========== HERO ========== -->
+        <header class="hero">
+            <div class="hero-moon">🌙</div>
+            <div class="hero-badge">✧ 小气球 · 五年陪伴 ✧</div>
+            <h1 class="hero-title">
+                囿于<span class="highlight">月白星紫</span><br>满心皆是<span class="highlight">马嘉祺</span>
+            </h1>
+            <p class="hero-subtitle">—— 月月的小宇宙 ——</p>
+            <div class="hero-divider"></div>
+            <p class="hero-quote">
+                「 在这个喧嚣世界里，<br>
+                你是我最安静的<em>心动</em> 」
+            </p>
+            <!-- floating balloons -->
+            <span class="balloon-float" style="top:15%;left:8%;--float-dur:3.5s;--float-delay:0s;">🎈</span>
+            <span class="balloon-float" style="top:25%;right:10%;--float-dur:4.2s;--float-delay:1.2s;">🎈</span>
+            <span class="balloon-float" style="top:55%;left:5%;--float-dur:3.8s;--float-delay:2s;">💜</span>
+            <span class="balloon-float" style="top:60%;right:6%;--float-dur:4.5s;--float-delay:0.6s;">⭐</span>
+        </header>
+
+        <div class="scroll-indicator">
+            <span>⌄</span>
+        </div>
+
+        <!-- ========== SECTION 1: SELF INTRO ========== -->
+        <section class="section fade-in" id="about">
+            <span class="section-number">01</span>
+            <div class="section-icon">💜</div>
+            <h2 class="section-title">关于我</h2>
+            <p class="section-subtitle">ABOUT YUEYUE</p>
+            <div class="section-divider"></div>
+
+            <div class="intro-grid">
+                <!-- Avatar -->
+                <div class="intro-avatar-wrap">
+                    <div class="intro-avatar" style="position:relative;">
+                        <div class="intro-avatar-ring"></div>
+                        🎀
+                    </div>
+                    <p class="intro-avatar-label">🌙 月月 🌙</p>
+                </div>
+
+                <!-- Info -->
+                <div class="intro-info">
+                    <h3>你好呀，我是 <span class="name-highlight">月月</span> ✨</h3>
+                    <div class="intro-tags">
+                        <span class="intro-tag">🎤 五年老粉</span>
+                        <span class="intro-tag balloon-tag">🎈 小气球</span>
+                        <span class="intro-tag">💜 月白星紫</span>
+                        <span class="intro-tag">🌟 00后</span>
+                        <span class="intro-tag">📝 文字爱好者</span>
+                    </div>
+                    <p class="intro-desc">
+                        从<strong>2021年</strong>那个夏天开始，一首《<strong>盛夏光年</strong>》让我认识了那个舞台上发光的少年。
+                        不知不觉，已经陪他走过了<strong>五个春夏秋冬</strong>。
+                        <br><br>
+                        我是<strong>小气球</strong>——马嘉祺粉丝大家庭中的一员。
+                        月白与星紫，是我心中最温柔的颜色，也是我与嘉祺之间最特别的连接。
+                        <br><br>
+                        「囿于月白星紫，满心皆是马嘉祺」
+                        <br>
+                        这不仅是一句口号，更是我这五年来最真实的写照 💜
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-number">2019</div>
+                    <div class="stat-label">嘉祺出道年份</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5年+</div>
+                    <div class="stat-label">我的陪伴时光</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">未来继续同行</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">💜🎈</div>
+                    <div class="stat-label">永爱月白星紫</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 2: STORIES WITH JIAQI ========== -->
+        <section class="section fade-in" id="stories">
+            <span class="section-number">02</span>
+            <div class="section-icon">📸</div>
+            <h2 class="section-title">我与嘉祺的三两事</h2>
+            <p class="section-subtitle">MY STORIES WITH JIAQI</p>
+            <div class="section-divider"></div>
+
+            <div class="gallery-grid">
+
+                <!-- Story 1 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <!-- 马嘉祺 声生不息舞台 / 替代图片: 演唱会舞台照 -->
+                        <img
+                            src="https://p1.pxfuel.com/preview/587/145/309/concert-music-stage-show-lights-concert-scene.jpg"
+                            alt="马嘉祺舞台 - 那首让我入坑的盛夏光年"
+                            loading="lazy"
+                            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="gallery-img-fallback" style="display:none;">
+                            🎤✨
+                        </div>
+                        <div class="gallery-img-overlay">
+                            <span class="img-label">📷 舞台 · Stage</span>
+                        </div>
+                    </div>
+                    <div class="gallery-card-body">
+                        <h4>🎵 初遇 · 盛夏光年</h4>
+                        <p>2021年的盛夏，一首《盛夏光年》三段高音直击心底。那个在舞台上闪闪发光的少年，就这样闯进了我的世界。从那天起，我知道——这就是我要用心守护的人。</p>
+                        <p class="story-date">📅 2021年 · 夏</p>
+                    </div>
+                </div>
+
+                <!-- Story 2 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <!-- 马嘉祺 演唱会照片 / 替代图片 -->
+                        <img
+                            src="https://p1.pxfuel.com/preview/848/608/872/concert-crowd-concert-audience-live-music.jpg"
+                            alt="马嘉祺演唱会 - 第一次去现场看嘉祺"
+                            loading="lazy"
+                            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="gallery-img-fallback" style="display:none;">
+                            💜🎶
+                        </div>
+                        <div class="gallery-img-overlay">
+                            <span class="img-label">📷 演唱会 · Concert</span>
+                        </div>
+                    </div>
+                    <div class="gallery-card-body">
+                        <h4>🎫 奔赴 · 第一次演唱会</h4>
+                        <p>攒了很久的零花钱，终于买到人生中第一张演唱会门票。当紫色的灯海亮起，当全场小气球一起喊出他的名字——那一刻，我哭得像个孩子。原来奔赴热爱的感觉，如此美好。</p>
+                        <p class="story-date">📅 2023年 · 海口</p>
+                    </div>
+                </div>
+
+                <!-- Story 3 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <!-- 马嘉祺 紫海应援 / 替代图片 -->
+                        <img
+                            src="https://p0.pxfuel.com/preview/54/113/206/concert-music-audience-live-performance-stage.jpg"
+                            alt="紫色灯海 - 小气球的应援海"
+                            loading="lazy"
+                            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="gallery-img-fallback" style="display:none;">
+                            💜🌟
+                        </div>
+                        <div class="gallery-img-overlay">
+                            <span class="img-label">📷 紫海 · Purple Ocean</span>
+                        </div>
+                    </div>
+                    <div class="gallery-card-body">
+                        <h4>💜 守护 · 双向奔赴</h4>
+                        <p>嘉祺说过，紫色是他最喜欢的颜色，因为那是小气球的颜色。每一次应援、每一条评论、每一句"加油"，都是我们之间心照不宣的默契。月白星紫，是属于我们的浪漫。</p>
+                        <p class="story-date">📅 2021 - 至今</p>
+                    </div>
+                </div>
+
+                <!-- Story 4 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <!-- 马嘉祺 毕业照/成长 / 替代图片 -->
+                        <img
+                            src="https://p1.pxfuel.com/preview/415/351/701/music-concert-music-stage-show-live-concert.jpg"
+                            alt="马嘉祺 - 陪他成长的每一步"
+                            loading="lazy"
+                            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="gallery-img-fallback" style="display:none;">
+                            🎓⭐
+                        </div>
+                        <div class="gallery-img-overlay">
+                            <span class="img-label">📷 成长 · Growth</span>
+                        </div>
+                    </div>
+                    <div class="gallery-card-body">
+                        <h4>🌱 见证 · 一路成长</h4>
+                        <p>从练习生到时代少年团队长，从青涩少年到大学毕业。五年时光，我见证了嘉祺的每一次蜕变、每一个高光时刻。看着他越来越好，就是小气球最大的幸福。</p>
+                        <p class="story-date">📅 2021 - 2026</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图片替换提示 -->
+            <div style="margin-top:24px;padding:16px 20px;background:rgba(123,63,163,0.12);border-radius:12px;border:1px dashed rgba(155,111,192,0.3);font-size:12px;color:var(--star-purple-light);letter-spacing:1px;text-align:center;">
+                💡 提示：以上为氛围配图。你可以将 <strong>自己和嘉祺相关的照片</strong> 替换到对应位置，让主页更有个人特色哦~
+            </div>
+        </section>
+
+        <!-- ========== SECTION 3: WHY I LOVE HIM ========== -->
+        <section class="section fade-in" id="why">
+            <span class="section-number">03</span>
+            <div class="section-icon">💌</div>
+            <h2 class="section-title">为什么是马嘉祺</h2>
+            <p class="section-subtitle">WHY MA JIAQI</p>
+            <div class="section-divider"></div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+                <!-- Reason cards -->
+                <div style="padding:24px;background:rgba(123,63,163,0.08);border-radius:14px;border:1px solid rgba(155,111,192,0.15);text-align:center;transition:all 0.3s ease;"
+                     onmouseover="this.style.borderColor='rgba(212,168,67,0.5)';this.style.transform='translateY(-4px)';"
+                     onmouseout="this.style.borderColor='rgba(155,111,192,0.15)';this.style.transform='translateY(0)';">
+                    <div style="font-size:40px;margin-bottom:10px;">🎙️</div>
+                    <h4 style="color:var(--moon-white);letter-spacing:2px;margin-bottom:8px;">实力主唱</h4>
+                    <p style="font-size:13px;color:var(--text-light);line-height:1.8;">三段高音震撼全场<br>嗓音清澈有辨识度<br>每一首歌都是艺术品</p>
+                </div>
+
+                <div style="padding:24px;background:rgba(123,63,163,0.08);border-radius:14px;border:1px solid rgba(155,111,192,0.15);text-align:center;transition:all 0.3s ease;"
+                     onmouseover="this.style.borderColor='rgba(212,168,67,0.5)';this.style.transform='translateY(-4px)';"
+                     onmouseout="this.style.borderColor='rgba(155,111,192,0.15)';this.style.transform='translateY(0)';">
+                    <div style="font-size:40px;margin-bottom:10px;">💪</div>
+                    <h4 style="color:var(--moon-white);letter-spacing:2px;margin-bottom:8px;">努力上进</h4>
+                    <p style="font-size:13px;color:var(--text-light);line-height:1.8;">从练习生到队长<br>兼顾学业与事业<br>永远在突破自己</p>
+                </div>
+
+                <div style="padding:24px;background:rgba(123,63,163,0.08);border-radius:14px;border:1px solid rgba(155,111,192,0.15);text-align:center;transition:all 0.3s ease;"
+                     onmouseover="this.style.borderColor='rgba(212,168,67,0.5)';this.style.transform='translateY(-4px)';"
+                     onmouseout="this.style.borderColor='rgba(155,111,192,0.15)';this.style.transform='translateY(0)';">
+                    <div style="font-size:40px;margin-bottom:10px;">😊</div>
+                    <h4 style="color:var(--moon-white);letter-spacing:2px;margin-bottom:8px;">温暖真诚</h4>
+                    <p style="font-size:13px;color:var(--text-light);line-height:1.8;">对粉丝永远温柔<br>笑容治愈一切<br>谦逊有礼的少年</p>
+                </div>
+
+                <div style="padding:24px;background:rgba(123,63,163,0.08);border-radius:14px;border:1px solid rgba(155,111,192,0.15);text-align:center;transition:all 0.3s ease;"
+                     onmouseover="this.style.borderColor='rgba(212,168,67,0.5)';this.style.transform='translateY(-4px)';"
+                     onmouseout="this.style.borderColor='rgba(155,111,192,0.15)';this.style.transform='translateY(0)';">
+                    <div style="font-size:40px;margin-bottom:10px;">🌟</div>
+                    <h4 style="color:var(--moon-white);letter-spacing:2px;margin-bottom:8px;">全能ACE</h4>
+                    <p style="font-size:13px;color:var(--text-light);line-height:1.8;">唱跳俱佳台风稳<br>演技也在线<br>未来可期的全能偶像</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SECTION 4: CONTACT ========== -->
+        <section class="section fade-in" id="contact">
+            <span class="section-number">04</span>
+            <div class="section-icon">📬</div>
+            <h2 class="section-title">找到我</h2>
+            <p class="section-subtitle">FIND ME HERE</p>
+            <div class="section-divider"></div>
+
+            <div class="contact-grid">
+                <a href="https://weibo.com" target="_blank" class="contact-card" title="微博">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-info">
+                        <div class="contact-label">微博</div>
+                        <div class="contact-value">@月月是小气球吖</div>
+                    </div>
+                </a>
+
+                <div class="contact-card" title="微信">
+                    <span class="contact-icon">💬</span>
+                    <div class="contact-info">
+                        <div class="contact-label">微信</div>
+                        <div class="contact-value">YueYue_MJQ0521</div>
+                    </div>
+                </div>
+
+                <a href="https://space.bilibili.com" target="_blank" class="contact-card" title="B站">
+                    <span class="contact-icon">🎬</span>
+                    <div class="contact-info">
+                        <div class="contact-label">Bilibili</div>
+                        <div class="contact-value">月月的小宇宙</div>
+                    </div>
+                </a>
+
+                <a href="https://www.douyin.com" target="_blank" class="contact-card" title="抖音">
+                    <span class="contact-icon">🎵</span>
+                    <div class="contact-info">
+                        <div class="contact-label">抖音</div>
+                        <div class="contact-value">@月月爱嘉祺</div>
+                    </div>
+                </a>
+
+                <div class="contact-card" title="小红书">
+                    <span class="contact-icon">📕</span>
+                    <div class="contact-info">
+                        <div class="contact-label">小红书</div>
+                        <div class="contact-value">@紫色小气球月月</div>
+                    </div>
+                </div>
+
+                <div class="contact-card" title="QQ">
+                    <span class="contact-icon">🐧</span>
+                    <div class="contact-info">
+                        <div class="contact-label">QQ</div>
+                        <div class="contact-value">月月·MJQ应援站</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="site-footer">
+            <div class="footer-balloons">🎈 💜 🎈 💜 🎈</div>
+            <p class="footer-theme">囿于月白星紫，满心皆是马嘉祺</p>
+            <p class="footer-signature">
+                —— 小气球 · 月月 ｜ 五年陪伴，未来继续 ——
+            </p>
+            <p class="footer-ps">
+                💜 马嘉祺，未来的路，我们一起走下去 💜
+                <br>
+                Made with love by 月月 ✨ © 2026
+            </p>
+        </footer>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // ============ GENERATE STARS ============
+        (function() {
+            const container = document.getElementById('starsContainer');
+            const starCount = 120;
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 2.5 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+                star.style.setProperty('--delay', (Math.random() * 5) + 's');
+                // Some stars have a purple tint
+                if (Math.random() < 0.25) {
+                    star.style.background = '#b39ddb';
+                    star.style.boxShadow = '0 0 3px #b39ddb';
+                } else if (Math.random() < 0.15) {
+                    star.style.background = '#ffd54f';
+                    star.style.boxShadow = '0 0 3px #ffd54f';
+                }
+                fragment.appendChild(star);
+            }
+            container.appendChild(fragment);
+        })();
+
+        // ============ GENERATE STAGE LIGHTS ============
+        (function() {
+            const container = document.getElementById('stageLights');
+            const lightCount = 12;
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < lightCount; i++) {
+                const beam = document.createElement('div');
+                beam.classList.add('light-beam');
+                beam.style.left = (Math.random() * 90 + 5) + '%';
+                beam.style.height = (Math.random() * 200 + 300) + 'px';
+                beam.style.width = (Math.random() * 4 + 3) + 'px';
+                beam.style.setProperty('--sway-dur', (Math.random() * 6 + 6) + 's');
+                beam.style.setProperty('--sway-delay', (Math.random() * 4) + 's');
+                beam.style.setProperty('--angle-start', (Math.random() * 6 - 3) + 'deg');
+                beam.style.setProperty('--angle-mid1', (Math.random() * 8 - 4) + 'deg');
+                beam.style.setProperty('--angle-mid2', (Math.random() * 6 - 3) + 'deg');
+                beam.style.setProperty('--angle-mid3', (Math.random() * 8 - 4) + 'deg');
+                fragment.appendChild(beam);
+            }
+            container.appendChild(fragment);
+        })();
+
+        // ============ CLICK SPARKLE ============
+        document.addEventListener('click', function(e) {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = e.clientX + 'px';
+            sparkle.style.top = e.clientY + 'px';
+            const emojis = ['✨', '💜', '⭐', '🎈', '💫', '🌟', '🫧', '🎀'];
+            sparkle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1000);
+        });
+
+        // ============ SCROLL FADE-IN ============
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+            // Trigger initial check
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight) {
+                        el.classList.add('visible');
+                    }
+                });
+            }, 300);
+        })();
+
+        // ============ PERIODIC MUSIC NOTES ============
+        (function() {
+            const notes = ['🎵', '🎶', '🎼', '♪', '♫', '🎤', '💜'];
+
+            function spawnNote() {
+                const note = document.createElement('div');
+                note.classList.add('music-note');
+                note.textContent = notes[Math.floor(Math.random() * notes.length)];
+                note.style.left = Math.random() * 90 + '%';
+                note.style.bottom = Math.random() * 40 + '%';
+                note.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+                note.style.setProperty('--spin', (Math.random() * 120 - 60) + 'deg');
+                document.body.appendChild(note);
+                setTimeout(() => note.remove(), 4000);
+            }
+
+            setInterval(spawnNote, 5000);
+            // Spawn one immediately
+            spawnNote();
+        })();
+
+        console.log('%c💜 欢迎来到月月的小宇宙 💜',
+            'color:#d4a843;font-size:20px;font-family:serif;');
+        console.log('%c囿于月白星紫，满心皆是马嘉祺',
+            'color:#9b6fc0;font-size:14px;letter-spacing:2px;');
+        console.log('%c🎈 小气球一直在，永远在 🎈',
+            'color:#b39ddb;font-size:13px;');
+    </script>
+</body>
+</html>
