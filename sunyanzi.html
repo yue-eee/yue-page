@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逆光而行 · 孙燕姿 - 月月的向日葵小站</title>
+    <style>
+        :root {
+            --deep-blue: #1a2a4a;
+            --deep-blue-soft: #243656;
+            --ocean-blue: #3a5f8a;
+            --sky-blue: #6b9cc8;
+            --moon-white: #f0f3f8;
+            --moon-soft: #e4e9f2;
+            --sunflower: #e8a840;
+            --sunflower-light: #f5d078;
+            --warm-beige: #faf7f2;
+            --text-dark: #2c3540;
+            --text-soft: #5a6472;
+            --card-bg: rgba(255,255,255,0.85);
+            --card-shadow: 0 4px 24px rgba(26,42,74,0.10);
+            --font-cn: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', 'STHeiti', sans-serif;
+            --font-display: 'Georgia', 'Noto Serif SC', 'STSong', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-cn);
+            background: linear-gradient(180deg, #f5f7fb 0%, #eaf0f8 30%, #f0f3f8 60%, #f8f6f2 100%);
+            color: var(--text-dark);
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== FLOATING PETALS ===== */
+        .petals-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            font-size: 18px;
+            animation: petalFall var(--fall-dur) linear infinite;
+            animation-delay: var(--fall-delay);
+            opacity: 0.45;
+        }
+        @keyframes petalFall {
+            0%   { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0.45; }
+            25%  { transform: translateY(25vh) translateX(40px) rotate(90deg); opacity: 0.6; }
+            50%  { transform: translateY(55vh) translateX(-30px) rotate(200deg); opacity: 0.5; }
+            75%  { transform: translateY(78vh) translateX(25px) rotate(310deg); opacity: 0.35; }
+            100% { transform: translateY(105vh) translateX(-15px) rotate(400deg); opacity: 0; }
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 70px 30px 50px;
+            position: relative;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 22px;
+            border-radius: 50px;
+            font-size: 13px;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            background: rgba(58,95,138,0.08);
+            border: 1.5px solid rgba(58,95,138,0.25);
+            color: var(--ocean-blue);
+        }
+        .hero-icon {
+            font-size: 52px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 12px rgba(232,168,64,0.3));
+            animation: gentleBounce 3s ease-in-out infinite;
+        }
+        @keyframes gentleBounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(26px, 5vw, 42px);
+            color: var(--deep-blue);
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .hero-title .hl {
+            color: var(--sunflower);
+            text-shadow: 0 1px 12px rgba(232,168,64,0.2);
+        }
+        .hero-subtitle {
+            font-size: 15px;
+            color: var(--ocean-blue);
+            letter-spacing: 5px;
+            margin-bottom: 16px;
+        }
+        .hero-divider {
+            width: 60px; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--sunflower), transparent);
+            margin: 18px auto;
+        }
+        .hero-quote {
+            font-family: var(--font-display);
+            font-size: 17px;
+            color: var(--text-soft);
+            line-height: 2;
+            letter-spacing: 2px;
+        }
+        .hero-quote em {
+            font-style: normal;
+            color: var(--sunflower);
+            font-weight: bold;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin: 40px 0;
+            padding: 40px 35px;
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            border: 1px solid rgba(58,95,138,0.08);
+        }
+        .section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(26,42,74,0.15);
+        }
+        .section-icon { font-size: 32px; margin-bottom: 6px; }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(20px, 3vw, 28px);
+            color: var(--deep-blue);
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+        }
+        .section-subtitle {
+            font-size: 12px;
+            color: var(--ocean-blue);
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+        }
+        .section-line {
+            width: 40px; height: 2px;
+            background: var(--sunflower);
+            border-radius: 1px;
+            margin-bottom: 24px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 30px;
+            align-items: center;
+        }
+        .intro-avatar-wrap { text-align: center; }
+        .intro-avatar {
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--deep-blue-soft), var(--ocean-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            margin: 0 auto 12px;
+            border: 3px solid var(--sunflower);
+            box-shadow: 0 0 30px rgba(58,95,138,0.2);
+            position: relative;
+        }
+        .intro-avatar-label {
+            font-size: 14px;
+            color: var(--sunflower);
+            letter-spacing: 3px;
+        }
+        .intro-info h3 {
+            font-size: 21px;
+            color: var(--deep-blue);
+            margin-bottom: 14px;
+            letter-spacing: 2px;
+        }
+        .intro-info .name-hl {
+            color: var(--sunflower);
+            font-family: var(--font-display);
+            font-size: 24px;
+        }
+        .intro-tags {
+            display: flex; flex-wrap: wrap;
+            gap: 10px; margin-bottom: 18px;
+        }
+        .intro-tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 16px; border-radius: 50px;
+            font-size: 13px; letter-spacing: 2px;
+            background: rgba(58,95,138,0.06);
+            border: 1px solid rgba(58,95,138,0.2);
+            color: var(--ocean-blue);
+            transition: all 0.3s ease;
+        }
+        .intro-tag:hover {
+            background: rgba(232,168,64,0.1);
+            border-color: var(--sunflower);
+            color: var(--sunflower);
+        }
+        .intro-tag.fan-tag {
+            background: rgba(232,168,64,0.08);
+            border-color: rgba(232,168,64,0.4);
+            color: var(--sunflower);
+        }
+        .intro-desc {
+            font-size: 14px;
+            color: var(--text-soft);
+            line-height: 2;
+            letter-spacing: 1px;
+        }
+        .intro-desc strong { color: var(--ocean-blue); }
+
+        /* ===== STATS ===== */
+        .stats-row {
+            display: flex; justify-content: space-around;
+            text-align: center; margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(58,95,138,0.12);
+            flex-wrap: wrap; gap: 14px;
+        }
+        .stat-item .stat-num {
+            font-family: var(--font-display);
+            font-size: 30px; color: var(--sunflower);
+            font-weight: bold;
+        }
+        .stat-item .stat-lbl {
+            font-size: 12px; color: var(--ocean-blue);
+            letter-spacing: 2px; margin-top: 4px;
+        }
+
+        /* ===== STORIES GALLERY ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .gallery-card {
+            border-radius: 14px; overflow: hidden;
+            background: #fff;
+            border: 1px solid rgba(58,95,138,0.1);
+            transition: all 0.35s ease;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 36px rgba(26,42,74,0.15);
+            border-color: rgba(232,168,64,0.35);
+        }
+        .gallery-img {
+            width: 100%; height: 260px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .gallery-card:hover .gallery-img {
+            transform: scale(1.06);
+        }
+        .gallery-img-wrap {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #e8ecf2, #dce3ed);
+        }
+        .gallery-img-wrap .img-label {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 16px;
+            background: linear-gradient(transparent, rgba(26,42,74,0.8));
+            color: var(--moon-white);
+            font-size: 11px; letter-spacing: 2px;
+        }
+        .gallery-body {
+            padding: 16px 18px;
+        }
+        .gallery-body h4 {
+            font-size: 15px; color: var(--deep-blue);
+            letter-spacing: 2px; margin-bottom: 6px;
+        }
+        .gallery-body p {
+            font-size: 13px; color: var(--text-soft);
+            line-height: 1.8; letter-spacing: 1px;
+        }
+        .gallery-body .date {
+            font-size: 11px; color: var(--sky-blue);
+            letter-spacing: 2px; margin-top: 6px;
+        }
+
+        /* ===== REASON CARDS ===== */
+        .reason-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 16px;
+        }
+        .reason-card {
+            padding: 28px 22px;
+            background: rgba(58,95,138,0.03);
+            border-radius: 14px;
+            border: 1px solid rgba(58,95,138,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .reason-card:hover {
+            border-color: rgba(232,168,64,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(26,42,74,0.1);
+        }
+        .reason-icon { font-size: 38px; margin-bottom: 10px; }
+        .reason-card h4 {
+            font-size: 15px; color: var(--deep-blue);
+            letter-spacing: 2px; margin-bottom: 8px;
+        }
+        .reason-card p {
+            font-size: 13px; color: var(--text-soft);
+            line-height: 1.8;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+        }
+        .contact-card {
+            display: flex; align-items: center; gap: 12px;
+            padding: 18px 20px; border-radius: 12px;
+            background: rgba(58,95,138,0.03);
+            border: 1px solid rgba(58,95,138,0.1);
+            transition: all 0.3s ease;
+            text-decoration: none; color: inherit;
+        }
+        .contact-card:hover {
+            background: rgba(232,168,64,0.06);
+            border-color: var(--sunflower);
+            transform: translateY(-2px);
+        }
+        .contact-icon { font-size: 30px; flex-shrink: 0; }
+        .contact-info .c-label {
+            font-size: 11px; color: var(--ocean-blue);
+            letter-spacing: 2px;
+        }
+        .contact-info .c-value {
+            font-size: 14px; color: var(--deep-blue);
+            letter-spacing: 1px;
+        }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            text-align: center;
+            padding: 50px 20px 40px;
+            position: relative;
+        }
+        .footer-deco {
+            font-size: 22px; letter-spacing: 6px;
+            margin-bottom: 14px;
+        }
+        .footer-slogan {
+            font-family: var(--font-display);
+            font-size: 20px; color: var(--deep-blue);
+            letter-spacing: 4px; margin-bottom: 8px;
+        }
+        .footer-sig {
+            font-size: 13px; color: var(--ocean-blue);
+            letter-spacing: 3px;
+        }
+        .footer-ps {
+            font-size: 12px; color: rgba(58,95,138,0.5);
+            margin-top: 10px; letter-spacing: 2px;
+        }
+
+        /* ===== FADE IN ===== */
+        .fade-in {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-in.on {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .intro-grid { grid-template-columns: 1fr; text-align: center; }
+            .intro-tags { justify-content: center; }
+            .section { padding: 26px 18px; margin: 28px 0; }
+            .hero { padding: 45px 14px 35px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FLOATING PETALS -->
+    <div class="petals-container" id="petals"></div>
+
+    <!-- ==================== MAIN ==================== -->
+    <div class="main-container">
+
+        <!-- ===== HERO ===== -->
+        <header class="hero">
+            <div class="hero-badge">🌻 葵花籽 · 六年陪伴 🌻</div>
+            <div class="hero-icon">🌙</div>
+            <h1 class="hero-title">
+                逆<span class="hl">光</span>而行
+            </h1>
+            <p class="hero-subtitle">—— 月月 · 孙燕姿小站 ——</p>
+            <div class="hero-divider"></div>
+            <p class="hero-quote">
+                「 有一种<em>光亮</em>，<br>
+                穿过黑暗，落在心上 」
+            </p>
+        </header>
+
+        <!-- ===== ABOUT ME ===== -->
+        <section class="section fade-in">
+            <div class="section-icon">🌻</div>
+            <h2 class="section-title">关于我</h2>
+            <p class="section-subtitle">ABOUT YUEYUE</p>
+            <div class="section-line"></div>
+
+            <div class="intro-grid">
+                <div class="intro-avatar-wrap">
+                    <div class="intro-avatar">🌙</div>
+                    <p class="intro-avatar-label">月月 · YueYue</p>
+                </div>
+                <div class="intro-info">
+                    <h3>你好呀，我是 <span class="name-hl">月月</span> 🌻</h3>
+                    <div class="intro-tags">
+                        <span class="intro-tag">🎤 六年老粉</span>
+                        <span class="intro-tag fan-tag">🌻 葵花籽</span>
+                        <span class="intro-tag">🎵 逆光而行</span>
+                        <span class="intro-tag">💙 深空蓝</span>
+                        <span class="intro-tag">📝 音乐收藏家</span>
+                    </div>
+                    <p class="intro-desc">
+                        六年前，<strong>电台里偶然飘来《天黑黑》</strong>的旋律，那一瞬间，仿佛整个世界都安静了。
+                        <br><br>
+                        从那天起，燕姿的歌声就成了我生活中不可或缺的<strong>背景音</strong>。
+                        每一次循环播放，每一次翻看歌词本，<strong>逆光、开始懂了、遇见、我不难过</strong>……
+                        这些歌陪我走过了无数迷茫与成长。
+                        <br><br>
+                        「<strong>逆光而行</strong>」不仅是一句口号，
+                        更是在燕姿的歌声里，我学会的面对世界的方式 🌻
+                    </p>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-num">2000</div>
+                    <div class="stat-lbl">燕姿出道年份</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">6 年+</div>
+                    <div class="stat-lbl">我的陪伴时光</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">25th</div>
+                    <div class="stat-lbl">就在日落以后巡演</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">🌻🎵</div>
+                    <div class="stat-lbl">永远的葵花籽</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== STORIES ===== -->
+        <section class="section fade-in">
+            <div class="section-icon">📸</div>
+            <h2 class="section-title">我与燕姿的三两事</h2>
+            <p class="section-subtitle">MY STORIES WITH STEFANIE</p>
+            <div class="section-line"></div>
+
+            <div class="gallery-grid">
+
+                <!-- Story 1 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <img class="gallery-img"
+                             src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop"
+                             alt="电台听到天黑黑"
+                             loading="lazy"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;width:100%;height:260px;align-items:center;justify-content:center;font-size:64px;background:linear-gradient(135deg,#e8ecf2,#dce3ed);">📻</div>
+                        <div class="img-label">📷 初遇 · First Encounter</div>
+                    </div>
+                    <div class="gallery-body">
+                        <h4>📻 初遇 · 天黑黑</h4>
+                        <p>六年前偶然在电台听到《天黑黑》，燕姿清澈独特的嗓音一瞬间击中了我的内心。那句"天黑黑，欲落雨"，从此让我认识了这个用歌声讲故事的天后。</p>
+                        <p class="date">📅 大约六年前的某一天</p>
+                    </div>
+                </div>
+
+                <!-- Story 2 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <img class="gallery-img"
+                             src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=400&fit=crop"
+                             alt="循环燕姿的专辑"
+                             loading="lazy"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;width:100%;height:260px;align-items:center;justify-content:center;font-size:64px;background:linear-gradient(135deg,#e8ecf2,#dce3ed);">🎧</div>
+                        <div class="img-label">📷 陪伴 · Companion</div>
+                    </div>
+                    <div class="gallery-body">
+                        <h4>🎧 陪伴 · 逆光给我力量</h4>
+                        <p>循环听完燕姿所有专辑。迷茫难过的时候，《逆光》《开始懂了》的旋律总是在耳机里响起——她的歌声像一道光，温柔地穿透我的不安，给了我无数前行的勇气。</p>
+                        <p class="date">📅 六年来的每一天</p>
+                    </div>
+                </div>
+
+                <!-- Story 3 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <img class="gallery-img"
+                             src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=400&fit=crop"
+                             alt="收藏燕姿实体专辑"
+                             loading="lazy"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;width:100%;height:260px;align-items:center;justify-content:center;font-size:64px;background:linear-gradient(135deg,#e8ecf2,#dce3ed);">💿</div>
+                        <div class="img-label">📷 收藏 · Collection</div>
+                    </div>
+                    <div class="gallery-body">
+                        <h4>💿 收藏 · 每一张专辑</h4>
+                        <p>攒下零花钱，买下燕姿的全套实体专辑。一遍遍翻看歌词本，每一个手写的字句、每一张内页照片，都藏着我青春里最珍贵的回忆。</p>
+                        <p class="date">📅 逐年收集</p>
+                    </div>
+                </div>
+
+                <!-- Story 4 -->
+                <div class="gallery-card">
+                    <div class="gallery-img-wrap">
+                        <img class="gallery-img"
+                             src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=400&fit=crop"
+                             alt="期待演唱会之约"
+                             loading="lazy"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;width:100%;height:260px;align-items:center;justify-content:center;font-size:64px;background:linear-gradient(135deg,#e8ecf2,#dce3ed);">🎫</div>
+                        <div class="img-label">📷 约定 · Promise</div>
+                    </div>
+                    <div class="gallery-body">
+                        <h4>🎫 期待 · 赴一场青春约定</h4>
+                        <p>最大的愿望，就是有一天能去到燕姿的演唱会现场。跟着全场一起大合唱《遇见》《我怀念的》《第一天》，在万人挥舞的荧光海中，赴一场迟到了六年的青春约定。</p>
+                        <p class="date">📅 未来的某一天 ✨</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== WHY I LOVE HER ===== -->
+        <section class="section fade-in">
+            <div class="section-icon">💌</div>
+            <h2 class="section-title">为什么是孙燕姿</h2>
+            <p class="section-subtitle">WHY STEFANIE SUN</p>
+            <div class="section-line"></div>
+
+            <div class="reason-grid">
+                <div class="reason-card">
+                    <div class="reason-icon">🎤</div>
+                    <h4>天籁唱功</h4>
+                    <p>嗓音独特干净，真假音转换自然流畅，抒情、摇滚曲风都能完美驾驭，演唱极具共情力。</p>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-icon">🎶</div>
+                    <h4>原创才女</h4>
+                    <p>擅长词曲创作，《天黑黑》《完美的一天》等作品自带生活质感，温柔又有力量。</p>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-icon">🌷</div>
+                    <h4>温柔通透</h4>
+                    <p>低调淡泊不炒作，对待粉丝真诚柔软，清醒通透的人生态度格外治愈人心。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section class="section fade-in">
+            <div class="section-icon">📬</div>
+            <h2 class="section-title">找到我</h2>
+            <p class="section-subtitle">FIND ME HERE</p>
+            <div class="section-line"></div>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <span class="contact-icon">💬</span>
+                    <div class="contact-info">
+                        <div class="c-label">微信</div>
+                        <div class="c-value">y8803099</div>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-info">
+                        <div class="c-label">微博</div>
+                        <div class="c-value">@月月是葵花籽</div>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <span class="contact-icon">🎬</span>
+                    <div class="contact-info">
+                        <div class="c-label">Bilibili</div>
+                        <div class="c-value">月月的逆光小站</div>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <span class="contact-icon">📕</span>
+                    <div class="contact-info">
+                        <div class="c-label">小红书</div>
+                        <div class="c-value">@月月爱燕姿</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="site-footer">
+            <div class="footer-deco">🌻 🎵 🌙 🎵 🌻</div>
+            <p class="footer-slogan">逆光而行</p>
+            <p class="footer-sig">—— 葵花籽 · 月月 ｜ 六年陪伴，未来继续 ——</p>
+            <p class="footer-ps">
+                🌻 孙燕姿，谢谢你用歌声照亮我的世界 🌻
+                <br>Made with love by 月月 ✨ © 2026
+            </p>
+        </footer>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // Petals
+        (function(){
+            const c = document.getElementById('petals');
+            const items = ['🌻','✨','💙','🎵','🌙','🫧','☀️','💫'];
+            const f = document.createDocumentFragment();
+            for(let i=0;i<40;i++){
+                const p = document.createElement('span');
+                p.className='petal';
+                p.textContent = items[i%items.length];
+                p.style.left = Math.random()*95+'%';
+                p.style.setProperty('--fall-dur',(Math.random()*8+8)+'s');
+                p.style.setProperty('--fall-delay',(Math.random()*8)+'s');
+                p.style.fontSize = (Math.random()*14+14)+'px';
+                f.appendChild(p);
+            }
+            c.appendChild(f);
+        })();
+
+        // Fade in
+        (function(){
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+            }, {threshold:0.12});
+            document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+            setTimeout(()=>document.querySelectorAll('.fade-in').forEach(el=>{
+                if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('on');
+            }),300);
+        })();
+
+        console.log('%c🌻 欢迎来到月月的逆光小站 🌻', 'color:#e8a840;font-size:18px;');
+        console.log('%c逆光而行 · 孙燕姿', 'color:#3a5f8a;font-size:14px;letter-spacing:3px;');
+    </script>
+</body>
+</html>
