@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>粉丝主页定制 · 信息卡</title>
+    <style>
+        :root {
+            --bg: #faf9f7;
+            --card: #fff;
+            --primary: #5b4caf;
+            --accent: #f0a060;
+            --text: #3a3540;
+            --soft: #8a8490;
+            --border: #e8e4ec;
+            --tag-bg: #f5f2f9;
+            --font: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px 24px;
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .header .icon { font-size: 44px; margin-bottom: 8px; }
+        .header h1 { font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
+        .header .sub { font-size: 13px; color: var(--soft); letter-spacing: 3px; }
+
+        .block {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .block:last-child { border-bottom: none; margin-bottom: 0; }
+
+        .block-title {
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .block-title .emoji { font-size: 22px; }
+        .block-title .tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 50px;
+            letter-spacing: 2px;
+        }
+        .tag-must { background: #fff0f0; color: #e05555; }
+        .tag-opt { background: #f0f0f0; color: #999; }
+
+        .row {
+            display: flex;
+            align-items: baseline;
+            padding: 8px 0;
+            gap: 12px;
+        }
+        .row .label {
+            flex-shrink: 0;
+            width: 90px;
+            font-size: 14px;
+            color: var(--soft);
+            letter-spacing: 2px;
+            text-align: right;
+        }
+        .row .input-hint {
+            flex: 1;
+            font-size: 14px;
+            color: #d0c8d8;
+            letter-spacing: 1px;
+            border-bottom: 1.5px dotted var(--border);
+            padding-bottom: 2px;
+        }
+
+        .photo-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+        }
+        .photo-box {
+            width: 60px; height: 60px;
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #d0c8d8;
+        }
+        .photo-desc {
+            font-size: 13px;
+            color: var(--soft);
+            letter-spacing: 1px;
+        }
+
+        .tips {
+            background: var(--tag-bg);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 13px;
+            color: var(--soft);
+            letter-spacing: 1px;
+            line-height: 1.9;
+        }
+        .tips strong { color: var(--primary); }
+
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 12px;
+            color: #ccc;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="header">
+            <div class="icon">🎨</div>
+            <h1>粉丝个人主页 · 定制信息卡</h1>
+            <p class="sub">填好发给我，帮你生成专属主页 ✨</p>
+        </div>
+
+        <!-- 必填 -->
+        <div class="block">
+            <div class="block-title">
+                <span class="emoji">📝</span> 基本信息
+                <span class="tag tag-must">必填</span>
+            </div>
+            <div class="row"><span class="label">你的昵称</span><span class="input-hint">例：月月</span></div>
+            <div class="row"><span class="label">你喜欢谁</span><span class="input-hint">例：马嘉祺 / 孙燕姿</span></div>
+            <div class="row"><span class="label">粉丝属性</span><span class="input-hint">例：小气球 / 燕窝 / 葵花籽</span></div>
+            <div class="row"><span class="label">喜欢多久</span><span class="input-hint">例：5年</span></div>
+            <div class="row"><span class="label">一句 Slogan</span><span class="input-hint">例：囿于月白星紫，满心皆是马嘉祺</span></div>
+        </div>
+
+        <!-- 选填 -->
+        <div class="block">
+            <div class="block-title">
+                <span class="emoji">🎨</span> 风格偏好
+                <span class="tag tag-opt">选填</span>
+            </div>
+            <div class="row"><span class="label">喜欢的色调</span><span class="input-hint">例：紫色、深空蓝、粉色</span></div>
+            <div class="row"><span class="label">喜欢的风格</span><span class="input-hint">例：演唱会酷炫 / 小清新 / 甜美</span></div>
+            <div class="row"><span class="label">头像用什么</span><span class="input-hint">例：🌙 / 给一张照片</span></div>
+        </div>
+
+        <!-- 照片 -->
+        <div class="block">
+            <div class="block-title">
+                <span class="emoji">📸</span> 你的照片
+                <span class="tag tag-opt">选填</span>
+            </div>
+            <p style="font-size:13px;color:var(--soft);letter-spacing:1px;margin-bottom:12px;">
+                发 1-4 张照片给我，备注一下场景（如：演唱会现场 / 我拍的Ta / 合照）
+            </p>
+            <div class="photo-row">
+                <div class="photo-box">📎</div>
+                <span class="photo-desc">场景：_______________</span>
+            </div>
+            <div class="photo-row">
+                <div class="photo-box">📎</div>
+                <span class="photo-desc">场景：_______________</span>
+            </div>
+            <div class="photo-row">
+                <div class="photo-box">📎</div>
+                <span class="photo-desc">场景：_______________</span>
+            </div>
+            <p style="font-size:12px;color:#ccc;margin-top:8px;">没照片也没关系，我会用氛围背景图代替</p>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="block">
+            <div class="block-title">
+                <span class="emoji">📬</span> 想公开的联系方式
+                <span class="tag tag-opt">选填</span>
+            </div>
+            <div class="row"><span class="label">微信</span><span class="input-hint">可发二维码，不发就空着</span></div>
+            <div class="row"><span class="label">微博</span><span class="input-hint">例：@月月是葵花籽</span></div>
+            <div class="row"><span class="label">其他</span><span class="input-hint">B站 / 抖音 / 小红书 ……</span></div>
+        </div>
+
+        <!-- 小提示 -->
+        <div class="tips">
+            💡 <strong>怎么填？</strong> 复制这段话，把答案写在冒号后面发给我就行！<br>
+            💡 <strong>多久做好？</strong> 收到信息后 1-2 天交付<br>
+            💡 <strong>能改吗？</strong> 上线后免费改一次
+        </div>
+    </div>
+
+    <div class="footer">Made with 💜 by 月月</div>
+</body>
+</html>
