@@ -6,207 +6,184 @@
     <title>粉丝主页定制 · 信息卡</title>
     <style>
         :root {
-            --bg: #faf9f7;
-            --card: #fff;
-            --primary: #5b4caf;
-            --accent: #f0a060;
-            --text: #3a3540;
-            --soft: #8a8490;
-            --border: #e8e4ec;
-            --tag-bg: #f5f2f9;
+            --bg: #faf9f7; --card: #fff; --primary: #5b4caf; --accent: #f0a060;
+            --text: #3a3540; --soft: #8a8490; --border: #e8e4ec; --tag-bg: #f5f2f9;
             --font: 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.8;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 30px 24px;
-            background: var(--card);
-            border-radius: 16px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        .header .icon { font-size: 44px; margin-bottom: 8px; }
-        .header h1 { font-size: 22px; letter-spacing: 2px; margin-bottom: 4px; }
-        .header .sub { font-size: 13px; color: var(--soft); letter-spacing: 3px; }
+        body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.8; padding:20px; }
+        .container { max-width:600px; margin:0 auto; padding:30px 24px; background:var(--card); border-radius:16px; box-shadow:0 2px 20px rgba(0,0,0,0.06); }
+        .header { text-align:center; margin-bottom:28px; }
+        .header .icon { font-size:44px; margin-bottom:6px; }
+        .header h1 { font-size:22px; letter-spacing:2px; }
+        .header .sub { font-size:13px; color:var(--soft); letter-spacing:3px; margin-top:4px; }
 
-        .block {
-            margin-bottom: 28px;
-            padding-bottom: 24px;
-            border-bottom: 1px dashed var(--border);
-        }
-        .block:last-child { border-bottom: none; margin-bottom: 0; }
+        .block { margin-bottom:24px; padding-bottom:20px; border-bottom:1px dashed var(--border); }
+        .block:last-child { border-bottom:none; margin-bottom:0; }
+        .block-title { font-size:16px; font-weight:bold; letter-spacing:2px; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+        .block-title .emoji { font-size:22px; }
+        .tag { font-size:10px; padding:2px 8px; border-radius:50px; letter-spacing:2px; }
+        .tag-must { background:#fff0f0; color:#e05555; }
+        .tag-opt { background:#f0f0f0; color:#999; }
 
-        .block-title {
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .field { margin-bottom:12px; }
+        .field label { display:block; font-size:13px; color:var(--soft); letter-spacing:2px; margin-bottom:4px; }
+        .field input, .field textarea {
+            width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:10px;
+            font-size:15px; font-family:var(--font); color:var(--text); outline:none; transition:border 0.2s;
+            background:#fcfcfd; letter-spacing:1px;
         }
-        .block-title .emoji { font-size: 22px; }
-        .block-title .tag {
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 50px;
-            letter-spacing: 2px;
-        }
-        .tag-must { background: #fff0f0; color: #e05555; }
-        .tag-opt { background: #f0f0f0; color: #999; }
+        .field input:focus, .field textarea:focus { border-color:var(--primary); }
+        .field input::placeholder, .field textarea::placeholder { color:#ccc; }
+        .field textarea { resize:vertical; min-height:60px; }
 
-        .row {
-            display: flex;
-            align-items: baseline;
-            padding: 8px 0;
-            gap: 12px;
-        }
-        .row .label {
-            flex-shrink: 0;
-            width: 90px;
-            font-size: 14px;
-            color: var(--soft);
-            letter-spacing: 2px;
-            text-align: right;
-        }
-        .row .input-hint {
-            flex: 1;
-            font-size: 14px;
-            color: #d0c8d8;
-            letter-spacing: 1px;
-            border-bottom: 1.5px dotted var(--border);
-            padding-bottom: 2px;
-        }
+        .photo-note { font-size:13px; color:var(--soft); letter-spacing:1px; margin-bottom:12px; line-height:1.7; }
 
-        .photo-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 0;
+        .btn-row { text-align:center; margin-top:24px; }
+        .btn {
+            display:inline-block; padding:14px 40px; border:none; border-radius:50px;
+            font-size:16px; letter-spacing:3px; cursor:pointer; font-family:var(--font);
+            transition: all 0.3s;
         }
-        .photo-box {
-            width: 60px; height: 60px;
-            border: 2px dashed var(--border);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #d0c8d8;
+        .btn-copy {
+            background:var(--primary); color:#fff;
+            box-shadow:0 4px 16px rgba(91,76,175,0.3);
         }
-        .photo-desc {
-            font-size: 13px;
-            color: var(--soft);
-            letter-spacing: 1px;
-        }
+        .btn-copy:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(91,76,175,0.4); }
+        .btn-copy:active { transform:scale(0.97); }
 
-        .tips {
-            background: var(--tag-bg);
-            border-radius: 12px;
-            padding: 16px 20px;
-            font-size: 13px;
-            color: var(--soft);
-            letter-spacing: 1px;
-            line-height: 1.9;
+        .toast {
+            position:fixed; top:20px; left:50%; transform:translateX(-50%);
+            background:#4caf50; color:#fff; padding:12px 24px; border-radius:50px;
+            font-size:14px; letter-spacing:2px; z-index:999; opacity:0;
+            transition:opacity 0.3s; pointer-events:none;
         }
-        .tips strong { color: var(--primary); }
+        .toast.show { opacity:1; }
 
-        .footer {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 12px;
-            color: #ccc;
-            letter-spacing: 2px;
+        .tips { background:var(--tag-bg); border-radius:12px; padding:16px 20px; font-size:13px; color:var(--soft); letter-spacing:1px; line-height:1.9; margin-top:20px; }
+        .tips strong { color:var(--primary); }
+
+        .footer { text-align:center; margin-top:24px; font-size:12px; color:#ccc; letter-spacing:2px; }
+
+        @media (max-width:480px) {
+            .container { padding:20px 16px; }
+            .btn { width:100%; }
         }
     </style>
 </head>
 <body>
+
+    <div id="toast" class="toast">✅ 已复制！去微信粘贴发给我吧～</div>
+
     <div class="container">
 
         <div class="header">
             <div class="icon">🎨</div>
             <h1>粉丝个人主页 · 定制信息卡</h1>
-            <p class="sub">填好发给我，帮你生成专属主页 ✨</p>
+            <p class="sub">填好点复制，发给我就行 ✨</p>
         </div>
 
-        <!-- 必填 -->
+        <!-- 基本信息 -->
         <div class="block">
-            <div class="block-title">
-                <span class="emoji">📝</span> 基本信息
-                <span class="tag tag-must">必填</span>
-            </div>
-            <div class="row"><span class="label">你的昵称</span><span class="input-hint">例：月月</span></div>
-            <div class="row"><span class="label">你喜欢谁</span><span class="input-hint">例：马嘉祺 / 孙燕姿</span></div>
-            <div class="row"><span class="label">粉丝属性</span><span class="input-hint">例：小气球 / 燕窝 / 葵花籽</span></div>
-            <div class="row"><span class="label">喜欢多久</span><span class="input-hint">例：5年</span></div>
-            <div class="row"><span class="label">一句 Slogan</span><span class="input-hint">例：囿于月白星紫，满心皆是马嘉祺</span></div>
+            <div class="block-title"><span class="emoji">📝</span> 基本信息 <span class="tag tag-must">必填</span></div>
+            <div class="field"><label>你的昵称</label><input id="nickname" placeholder="例：月月"></div>
+            <div class="field"><label>你喜欢谁</label><input id="idol" placeholder="例：马嘉祺 / 孙燕姿"></div>
+            <div class="field"><label>粉丝属性</label><input id="fanid" placeholder="例：小气球 / 燕窝"></div>
+            <div class="field"><label>喜欢多久了</label><input id="years" placeholder="例：5年"></div>
+            <div class="field"><label>一句 Slogan</label><input id="slogan" placeholder="例：囿于月白星紫，满心皆是马嘉祺"></div>
         </div>
 
-        <!-- 选填 -->
+        <!-- 风格偏好 -->
         <div class="block">
-            <div class="block-title">
-                <span class="emoji">🎨</span> 风格偏好
-                <span class="tag tag-opt">选填</span>
-            </div>
-            <div class="row"><span class="label">喜欢的色调</span><span class="input-hint">例：紫色、深空蓝、粉色</span></div>
-            <div class="row"><span class="label">喜欢的风格</span><span class="input-hint">例：演唱会酷炫 / 小清新 / 甜美</span></div>
-            <div class="row"><span class="label">头像用什么</span><span class="input-hint">例：🌙 / 给一张照片</span></div>
+            <div class="block-title"><span class="emoji">🎨</span> 风格偏好 <span class="tag tag-opt">选填</span></div>
+            <div class="field"><label>喜欢什么色调</label><input id="color" placeholder="例：紫色 / 深空蓝 / 粉色"></div>
+            <div class="field"><label>喜欢什么风格</label><input id="style" placeholder="例：演唱会酷炫 / 小清新 / 甜美"></div>
+            <div class="field"><label>头像用什么</label><input id="avatar" placeholder="例：🌙 / 我发照片给你"></div>
         </div>
 
         <!-- 照片 -->
         <div class="block">
-            <div class="block-title">
-                <span class="emoji">📸</span> 你的照片
-                <span class="tag tag-opt">选填</span>
-            </div>
-            <p style="font-size:13px;color:var(--soft);letter-spacing:1px;margin-bottom:12px;">
-                发 1-4 张照片给我，备注一下场景（如：演唱会现场 / 我拍的Ta / 合照）
-            </p>
-            <div class="photo-row">
-                <div class="photo-box">📎</div>
-                <span class="photo-desc">场景：_______________</span>
-            </div>
-            <div class="photo-row">
-                <div class="photo-box">📎</div>
-                <span class="photo-desc">场景：_______________</span>
-            </div>
-            <div class="photo-row">
-                <div class="photo-box">📎</div>
-                <span class="photo-desc">场景：_______________</span>
-            </div>
-            <p style="font-size:12px;color:#ccc;margin-top:8px;">没照片也没关系，我会用氛围背景图代替</p>
+            <div class="block-title"><span class="emoji">📸</span> 照片说明 <span class="tag tag-opt">选填</span></div>
+            <p class="photo-note">照片直接微信发给我就行，在这里备注一下每张的场景：</p>
+            <div class="field"><label>照片1场景</label><input id="photo1" placeholder="例：2023年演唱会现场拍的"></div>
+            <div class="field"><label>照片2场景</label><input id="photo2" placeholder="例：签售会合照"></div>
+            <div class="field"><label>照片3场景</label><input id="photo3" placeholder="例：最喜欢的专辑封面"></div>
         </div>
 
         <!-- 联系方式 -->
         <div class="block">
-            <div class="block-title">
-                <span class="emoji">📬</span> 想公开的联系方式
-                <span class="tag tag-opt">选填</span>
-            </div>
-            <div class="row"><span class="label">微信</span><span class="input-hint">可发二维码，不发就空着</span></div>
-            <div class="row"><span class="label">微博</span><span class="input-hint">例：@月月是葵花籽</span></div>
-            <div class="row"><span class="label">其他</span><span class="input-hint">B站 / 抖音 / 小红书 ……</span></div>
+            <div class="block-title"><span class="emoji">📬</span> 想公开的联系方式 <span class="tag tag-opt">选填</span></div>
+            <div class="field"><label>微信（可发二维码）</label><input id="wechat" placeholder="例：y8803099 / 发二维码图"></div>
+            <div class="field"><label>微博</label><input id="weibo" placeholder="例：@月月是葵花籽"></div>
+            <div class="field"><label>B站 / 抖音 / 其他</label><textarea id="otherContact" placeholder="想加什么就填什么，不想公开就空着"></textarea></div>
         </div>
 
-        <!-- 小提示 -->
+        <!-- 复制按钮 -->
+        <div class="btn-row">
+            <button class="btn btn-copy" onclick="copyInfo()">📋 一键复制发送</button>
+        </div>
+
         <div class="tips">
-            💡 <strong>怎么填？</strong> 复制这段话，把答案写在冒号后面发给我就行！<br>
-            💡 <strong>多久做好？</strong> 收到信息后 1-2 天交付<br>
-            💡 <strong>能改吗？</strong> 上线后免费改一次
+            💡 填好后点上方按钮，自动复制格式化内容<br>
+            💡 然后去微信粘贴发给我就行<br>
+            💡 收到后 1-2 天交付，上线后免费改一次
         </div>
     </div>
 
     <div class="footer">Made with 💜 by 月月</div>
+
+    <script>
+        function copyInfo() {
+            const fields = [
+                ['昵称', 'nickname'],
+                ['喜欢谁', 'idol'],
+                ['粉丝属性', 'fanid'],
+                ['喜欢多久', 'years'],
+                ['Slogan', 'slogan'],
+                ['色调', 'color'],
+                ['风格', 'style'],
+                ['头像', 'avatar'],
+                ['照片1', 'photo1'],
+                ['照片2', 'photo2'],
+                ['照片3', 'photo3'],
+                ['微信', 'wechat'],
+                ['微博', 'weibo'],
+                ['其他', 'otherContact'],
+            ];
+            const lines = ['🎨 我的粉丝主页定制信息 🎨', ''];
+            const has = {};
+            fields.forEach(([label, id]) => {
+                const val = document.getElementById(id).value.trim();
+                if (val) {
+                    lines.push(label + '：' + val);
+                    has[id] = true;
+                }
+            });
+            // check if nickname + idol are filled
+            if (!has['nickname'] || !has['idol']) {
+                alert('至少填一下「昵称」和「喜欢谁」哦～');
+                return;
+            }
+            lines.push('');
+            lines.push('📸 照片我微信发你～');
+            const text = lines.join('\n');
+            navigator.clipboard.writeText(text).then(() => {
+                const t = document.getElementById('toast');
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 2500);
+            }).catch(() => {
+                // fallback for older browsers
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                const t = document.getElementById('toast');
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 2500);
+            });
+        }
+        </script>
 </body>
 </html>
