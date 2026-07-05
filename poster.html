@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=750, initial-scale=1.0">
+    <title>海报</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            width:750px;
+            font-family: 'PingFang SC','Microsoft YaHei',sans-serif;
+            background: linear-gradient(180deg, #0a0612 0%, #1a1040 40%, #251550 70%, #0f0a20 100%);
+            color: #e0dce8;
+            overflow:hidden;
+        }
+        .poster {
+            width:750px; padding: 60px 50px 50px;
+            background: radial-gradient(ellipse at 50% 15%, rgba(155,111,192,0.25) 0%, transparent 60%),
+                        radial-gradient(ellipse at 85% 80%, rgba(212,168,67,0.12) 0%, transparent 50%),
+                        linear-gradient(180deg, #0a0612 0%, #1a1040 40%, #251550 70%, #0f0a20 100%);
+            position:relative; overflow:hidden;
+        }
+
+        /* stars */
+        .stars {
+            position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;
+        }
+        .star {
+            position:absolute; background:white; border-radius:50%;
+            animation: twinkle var(--d) ease-in-out infinite;
+            animation-delay: var(--dl);
+        }
+        @keyframes twinkle {
+            0%,100% { opacity:0.2; transform:scale(1); }
+            50% { opacity:0.8; transform:scale(1.5); }
+        }
+
+        /* content */
+        .content { position:relative; z-index:1; text-align:center; }
+
+        .badge {
+            display:inline-block; padding:6px 22px; border:1.5px solid rgba(155,111,192,0.6);
+            border-radius:50px; color:#c0a0e0; font-size:22px; letter-spacing:6px;
+            margin-bottom:28px; background:rgba(123,63,163,0.15);
+        }
+
+        .title {
+            font-family:'Georgia','STSong',serif;
+            font-size:52px; font-weight:bold; color:#e8d8f4;
+            letter-spacing:4px; line-height:1.4; margin-bottom:16px;
+            text-shadow:0 0 40px rgba(155,111,192,0.5);
+        }
+        .title .hl { color:#f0d68a; text-shadow:0 0 40px rgba(212,168,67,0.6); }
+
+        .subtitle {
+            font-size:24px; color:#9b6fc0; letter-spacing:8px; margin-bottom:36px;
+        }
+
+        .divider {
+            width:100px; height:2px; background:linear-gradient(90deg,transparent,#d4a843,transparent);
+            margin:0 auto 36px;
+        }
+
+        .features { display:flex; flex-direction:column; gap:20px; margin-bottom:40px; }
+
+        .feature {
+            display:flex; align-items:center; gap:20px;
+            padding:22px 28px; border-radius:16px;
+            background:rgba(30,15,50,0.6); border:1px solid rgba(155,111,192,0.2);
+        }
+        .feat-icon { font-size:44px; flex-shrink:0; width:70px; text-align:center; }
+        .feat-text { text-align:left; }
+        .feat-title { font-size:26px; color:#e8d8f4; letter-spacing:3px; margin-bottom:4px; }
+        .feat-desc { font-size:20px; color:#9b8fb0; letter-spacing:2px; }
+
+        .cta-box {
+            margin-top:16px; padding:30px; border-radius:18px;
+            background:rgba(212,168,67,0.08); border:1.5px solid rgba(212,168,67,0.3);
+        }
+        .cta-title { font-size:28px; color:#f0d68a; letter-spacing:4px; margin-bottom:12px; }
+        .cta-sub { font-size:20px; color:#c0a8d0; letter-spacing:3px; line-height:1.8; }
+
+        .footer {
+            margin-top:36px; padding-top:30px;
+            border-top:1px solid rgba(155,111,192,0.15);
+            font-size:18px; color:#7a6a90; letter-spacing:4px;
+            line-height:2;
+        }
+
+        /* floating balloons */
+        .float {
+            position:absolute; font-size:36px; pointer-events:none;
+            animation: float var(--fd) ease-in-out infinite;
+            animation-delay: var(--fdl); opacity:0.5;
+        }
+        @keyframes float {
+            0%,100% { transform:translateY(0) rotate(0deg); }
+            50% { transform:translateY(-20px) rotate(8deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- stars bg -->
+        <div class="stars" id="stars"></div>
+
+        <!-- floating elements -->
+        <div class="float" style="top:8%;left:6%;--fd:3.5s;--fdl:0s;">🎈</div>
+        <div class="float" style="top:12%;right:8%;--fd:4s;--fdl:1s;">💜</div>
+        <div class="float" style="bottom:30%;left:5%;--fd:3.8s;--fdl:0.5s;">⭐</div>
+        <div class="float" style="bottom:25%;right:7%;--fd:4.2s;--fdl:2s;">🎈</div>
+
+        <div class="content">
+            <div class="badge">💜 追星姐妹专属 💜</div>
+            <h1 class="title">
+                你的<br><span class="hl">专属粉丝主页</span>
+            </h1>
+            <p class="subtitle">✦ 填个表 · 帮你做 ✦</p>
+            <div class="divider"></div>
+
+            <div class="features">
+                <div class="feature">
+                    <span class="feat-icon">🏠</span>
+                    <div class="feat-text">
+                        <div class="feat-title">完全属于你</div>
+                        <div class="feat-desc">你的名字、你的故事、你的照片</div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <span class="feat-icon">⚡</span>
+                    <div class="feat-text">
+                        <div class="feat-title">不用写代码</div>
+                        <div class="feat-desc">填个表，1-2天做好上线</div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <span class="feat-icon">🔗</span>
+                    <div class="feat-text">
+                        <div class="feat-title">专属链接永久有效</div>
+                        <div class="feat-desc">微信、微博、朋友圈随便发</div>
+                    </div>
+                </div>
+                <div class="feature">
+                    <span class="feat-icon">🎨</span>
+                    <div class="feat-text">
+                        <div class="feat-title">按你偶像配色定制</div>
+                        <div class="feat-desc">每个页面独一无二</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-box">
+                <div class="cta-title">📋 填个表就能拥有</div>
+                <div class="cta-sub">看看我的主页 → 戳我咨询～</div>
+            </div>
+
+            <div class="footer">
+                月月 · 追星五年 · 帮姐妹做主页 💜
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // generate stars
+    (function(){
+        const c=document.getElementById('stars');
+        const f=document.createDocumentFragment();
+        for(let i=0;i<80;i++){
+            const s=document.createElement('span');
+            s.className='star';
+            const sz=Math.random()*3+1;
+            s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*3+2}s;--dl:${Math.random()*4}s;`;
+            if(Math.random()<0.25) s.style.background='#b39ddb';
+            else if(Math.random()<0.15){ s.style.background='#ffd54f'; s.style.boxShadow='0 0 3px #ffd54f'; }
+            f.appendChild(s);
+        }
+        c.appendChild(f);
+    })();
+    </script>
+</body>
+</html>
