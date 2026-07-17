@@ -133,8 +133,9 @@ body{
 
   <div class="mode-btns">
     <button class="mode-btn active" data-mode="training" onclick="setMode('training')">🥊 单人训练</button>
-    <button class="mode-btn" data-mode="versus" onclick="setMode('versus')">⚔️ 双人对战</button>
+    <button class="mode-btn" data-mode="versus" id="btnVersus" onclick="setMode('versus')">⚔️ 双人对战</button>
   </div>
+  <div style="font-size:.6rem;color:var(--dim);letter-spacing:1px;min-height:16px;" id="modeNote"></div>
 
   <div class="char-grid" id="charGrid"></div>
 
@@ -220,12 +221,27 @@ function calcCharStats(ch){
 let mode = 'training';
 let selP1 = null, selP2 = null;
 
+const isMobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 function setMode(m){
+  // 手机端不允许双人模式
+  if (m === 'versus' && isMobileDevice){
+    document.getElementById('modeNote').textContent = '⚠️ 双人对战需要电脑键盘，手机仅支持单人训练';
+    return;
+  }
+  document.getElementById('modeNote').textContent = '';
   mode = m;
   selP1 = null; selP2 = null;
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
   document.getElementById('tagP2').style.display = m==='versus'?'inline-block':'none';
   updateSelectUI();
+}
+
+// 手机端隐藏双人按钮提示
+if (isMobileDevice){
+  document.getElementById('btnVersus').style.opacity = '0.4';
+  document.getElementById('btnVersus').title = '双人对战需要电脑键盘';
+  document.getElementById('modeNote').textContent = '📱 手机端仅开放单人训练模式';
 }
 
 function selectChar(chId){
