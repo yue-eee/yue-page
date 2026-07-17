@@ -137,6 +137,19 @@ body{
   </div>
   <div style="font-size:.6rem;color:var(--dim);letter-spacing:1px;min-height:16px;" id="modeNote"></div>
 
+  <!-- Training options -->
+  <div id="trainingOpts" style="display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;padding:4px 0;">
+    <span style="font-size:.7rem;color:var(--dim);letter-spacing:1px;">🥊 沙包名字</span>
+    <input type="text" id="sbName" value="沙包" maxlength="8" style="width:80px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-size:.75rem;text-align:center;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+    <span style="font-size:.7rem;color:var(--dim);letter-spacing:1px;">血量</span>
+    <select id="sbHpSelect" style="padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-size:.75rem;font-family:inherit;cursor:pointer;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+      <option value="100">100</option>
+      <option value="200" selected>200</option>
+      <option value="500">500</option>
+      <option value="1000">1000</option>
+    </select>
+  </div>
+
   <div class="char-grid" id="charGrid"></div>
 
   <div class="ready-row" id="readyRow">
@@ -224,7 +237,6 @@ let selP1 = null, selP2 = null;
 const isMobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 function setMode(m){
-  // 手机端不允许双人模式
   if (m === 'versus' && isMobileDevice){
     document.getElementById('modeNote').textContent = '⚠️ 双人对战需要电脑键盘，手机仅支持单人训练';
     return;
@@ -234,6 +246,7 @@ function setMode(m){
   selP1 = null; selP2 = null;
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
   document.getElementById('tagP2').style.display = m==='versus'?'inline-block':'none';
+  document.getElementById('trainingOpts').style.display = m==='training'?'flex':'none';
   updateSelectUI();
 }
 
@@ -328,11 +341,12 @@ function initBattle(){
     cw, ch, mode,
     p1,
     p2: charP2 ? makeRobot(cw*0.75, ch*0.55, -1, charP2, s2, 2) : null,
-    // Sandbag (training only)
-    sb: mode==='training' ? {
-      x:cw*0.60, y:ch*0.08, w:70, h:140,
-      angle:0, vel:0, hp:250, maxHp:250, ropeLen:ch*0.42,
-    } : null,
+    // Sandbag (training only) — read name & HP from select screen
+    sb: mode==='training' ? (()=>{
+      const hpVal = parseInt(document.getElementById('sbHpSelect')?.value || '200');
+      const nameVal = document.getElementById('sbName')?.value?.trim() || '沙包';
+      return { x:cw*0.60, y:ch*0.08, w:70, h:140, angle:0, vel:0, hp:hpVal, maxHp:hpVal, ropeLen:ch*0.42, name:nameVal };
+    })() : null,
     particles:[], dmgNumbers:[],
     keys:{},
     shakeX:0, shakeY:0, shakeDur:0,
@@ -618,6 +632,13 @@ function render(){
 function drawSandbag(ctx){
   const s=B.sb, px=s.x, py=s.y, len=s.ropeLen;
   const sx=px+Math.sin(s.angle)*len, sy=py+Math.cos(s.angle)*len;
+
+  // Name tag above mount
+  if (s.name){
+    ctx.fillStyle='#fff';ctx.font='bold 11px "PingFang SC"';ctx.textAlign='center';
+    ctx.fillText(s.name, px, py-16);
+  }
+
   ctx.strokeStyle='#666';ctx.lineWidth=3;
   ctx.beginPath();ctx.moveTo(px,py);ctx.quadraticCurveTo(px+Math.sin(s.angle)*len*.5,py+len*.55,sx,sy);ctx.stroke();
   ctx.fillStyle='#555';ctx.fillRect(px-15,py-8,30,12);
@@ -764,7 +785,7 @@ function drawHUD(ctx){
     const sr=B.sb.hp/B.sb.maxHp;
     ctx.fillStyle=sr>.5?'#5af':sr>.25?'#cac':'#c5a';ctx.fillRect(sx,hy,hw*sr,hh);
     ctx.strokeStyle='#555';ctx.strokeRect(sx,hy,hw,hh);
-    ctx.fillText(`🥊 沙包 HP:${Math.ceil(B.sb.hp)}`,sx+hw/2,hy+12);
+    ctx.fillText(`🥊 ${B.sb.name||'沙包'} HP:${Math.ceil(B.sb.hp)}`,sx+hw/2,hy+12);
   }
 }
 
