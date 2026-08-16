@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>现代病体质图鉴</title>
+<style>
+:root{
+  --bg:#1a1a1a;--card:#242424;--text:#eee;--dim:#999;--border:#3a3a3a;
+  --accent:#a78bfa;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  padding:24px 16px 40px;
+  -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:520px;margin:0 auto;}
+h1{text-align:center;font-size:1.3rem;letter-spacing:4px;margin-bottom:6px;}
+.sub{text-align:center;font-size:.72rem;color:var(--dim);letter-spacing:2px;margin-bottom:20px;}
+.card{
+  background:var(--card);border-radius:16px;border:1px solid var(--border);
+  padding:20px;margin-bottom:16px;
+}
+
+/* ============ 开始页 ============ */
+.hero-emoji{text-align:center;font-size:3rem;margin-bottom:10px;}
+.desc{font-size:.85rem;line-height:1.8;color:var(--text);text-align:center;margin-bottom:14px;}
+.desc b{color:var(--accent);}
+.notice{font-size:.68rem;color:var(--dim);text-align:center;line-height:1.7;margin-bottom:18px;}
+
+.btn{
+  display:block;width:100%;padding:15px;border-radius:30px;
+  background:var(--accent);border:none;color:#1a1a1a;
+  font-size:.95rem;letter-spacing:3px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:all .3s;text-align:center;
+}
+.btn:hover{filter:brightness(1.12);}
+.btn.ghost{
+  background:transparent;border:2px solid #555;color:#fff;font-weight:400;letter-spacing:2px;
+}
+.btn.ghost:hover{background:#333;border-color:#888;}
+
+/* ============ 做题页 ============ */
+.quiz-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.72rem;color:var(--dim);}
+.progress-track{height:6px;background:#333;border-radius:3px;overflow:hidden;margin-bottom:18px;}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s;border-radius:3px;}
+.q-text{font-size:1.05rem;line-height:1.6;margin-bottom:18px;letter-spacing:1px;}
+.opt{
+  display:block;width:100%;text-align:left;padding:14px 16px;margin-bottom:10px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;
+  color:var(--text);font-size:.9rem;cursor:pointer;font-family:inherit;
+  transition:all .2s;letter-spacing:1px;
+}
+.opt:hover{border-color:#777;background:rgba(255,255,255,.08);}
+.opt.picked{border-color:var(--accent);background:rgba(167,139,250,.12);}
+.back-row{display:flex;justify-content:space-between;margin-top:6px;}
+
+/* ============ 结果页 ============ */
+.result-hero{
+  text-align:center;padding:26px 16px;border-radius:16px;margin-bottom:16px;
+  border:1px solid var(--border);position:relative;overflow:hidden;
+}
+.result-emoji{font-size:3.4rem;display:block;margin-bottom:8px;}
+.result-name{font-size:1.5rem;font-weight:700;letter-spacing:4px;margin-bottom:12px;}
+.verdict{font-size:.9rem;line-height:1.8;color:var(--text);max-width:360px;margin:0 auto 10px;}
+.prescription{font-size:.78rem;color:var(--dim);font-style:italic;margin-bottom:14px;}
+.risk-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:4px;}
+.risk-tag{
+  font-size:.7rem;padding:4px 12px;border-radius:20px;
+  background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);
+  letter-spacing:1px;
+}
+
+/* 自救建议 */
+.tips-card h3{font-size:.8rem;letter-spacing:2px;color:var(--dim);margin-bottom:12px;}
+.tips-card li{list-style:none;font-size:.85rem;line-height:1.8;margin-bottom:8px;padding-left:20px;position:relative;}
+.tips-card li::before{content:'→';position:absolute;left:0;color:var(--accent);}
+
+/* 次诊断 */
+.second-badge{
+  display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);margin-bottom:16px;
+  font-size:.8rem;color:var(--dim);
+}
+.second-badge b{color:var(--text);}
+
+/* 条形图 */
+.bars h3{font-size:.8rem;letter-spacing:2px;color:var(--dim);margin-bottom:14px;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:.78rem;}
+.bar-row .b-emoji{width:22px;text-align:center;font-size:1rem;flex-shrink:0;}
+.bar-row .b-name{width:110px;flex-shrink:0;white-space:nowrap;color:var(--text);}
+.bar-row .b-track{flex:1;height:10px;background:#333;border-radius:5px;overflow:hidden;}
+.bar-row .b-fill{height:100%;width:0;border-radius:5px;transition:width .8s ease;}
+.bar-row .b-score{width:24px;text-align:right;color:var(--dim);flex-shrink:0;}
+
+.footer-note{font-size:.66rem;color:var(--dim);text-align:center;line-height:1.8;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ 开始页 ============ -->
+  <div id="screen-start">
+    <h1>📖 现代病体质图鉴</h1>
+    <p class="sub">测测你是哪一款「体质」</p>
+    <div class="card">
+      <div class="hero-emoji">🩺</div>
+      <p class="desc">
+        21 道生活习惯题,鉴定你的<b>「现代病体质人设」</b>。<br>
+        笑着做完,笑着被扎心。
+      </p>
+      <p class="notice">⚠️ 仅供娱乐,非医疗诊断。<br>身体如有不适,请及时就医。</p>
+      <button class="btn" onclick="startQuiz()">开始鉴定</button>
+    </div>
+  </div>
+
+  <!-- ============ 做题页 ============ -->
+  <div id="screen-quiz" style="display:none;">
+    <div class="quiz-head">
+      <span id="q-count"></span>
+      <span id="q-back" style="cursor:pointer;color:var(--accent);" onclick="prevQuestion()">‹ 上一题</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="q-text" id="q-text"></div>
+    <div id="q-opts"></div>
+  </div>
+
+  <!-- ============ 结果页 ============ -->
+  <div id="screen-result" style="display:none;">
+    <div class="result-hero" id="result-hero">
+      <span class="result-emoji" id="r-emoji"></span>
+      <div class="result-name" id="r-name"></div>
+      <div class="verdict" id="r-verdict"></div>
+      <div class="prescription" id="r-prescription"></div>
+      <div style="font-size:.66rem;color:var(--dim);margin-bottom:8px;letter-spacing:1px;">👇 这类习惯长期容易关联的健康风险(非诊断)</div>
+      <div class="risk-tags" id="r-risks"></div>
+    </div>
+
+    <div id="r-second"></div>
+
+    <div class="card tips-card">
+      <h3>💡 自救建议</h3>
+      <ul id="r-tips"></ul>
+    </div>
+
+    <div class="card bars">
+      <h3>📊 你的体质雷达</h3>
+      <div id="r-bars"></div>
+    </div>
+
+    <p class="footer-note" id="r-note"></p>
+
+    <button class="btn" onclick="copyResult()" style="margin-top:14px;">📋 复制报告</button>
+    <button class="btn ghost" onclick="restart()" style="margin-top:10px;">↺ 重新测试</button>
+  </div>
+
+</div>
+
+<script>
+// ==================== 7 种体质人设 ====================
+const PROFILES = [
+  {
+    name:'月亮合伙人', emoji:'🌙', color:'#a78bfa',
+    verdict:'经鉴定,你已与月亮达成长期合作协议,肝脏夜间无偿加班。',
+    prescription:'医嘱:和月亮协商调休,实在不行给肝发点加班费。',
+    risks:['心血管疾病','免疫力下降','内分泌紊乱'],
+    tips:['固定作息时间,周末也别差太多','睡前 1 小时远离手机屏幕','保证每晚 7 小时睡眠']
+  },
+  {
+    name:'血糖过山车车长', emoji:'🧋', color:'#f59e0b',
+    verdict:'你的胰岛素已提交离职申请,血糖常年坐过山车。',
+    prescription:'医嘱:给胰岛素放个假,也让你的胰腺喘口气。',
+    risks:['2型糖尿病','肥胖','脂肪肝'],
+    tips:['逐步减糖,含糖饮料换成白水或无糖茶','控制精制碳水和甜点频率','定期体检关注血糖']
+  },
+  {
+    name:'人体工学反向大师', emoji:'🪑', color:'#f472b6',
+    verdict:'你用最魔幻的姿势,坐出了最贵的理疗费。',
+    prescription:'医嘱:每小时起来走走,别让椎间盘提前退休。',
+    risks:['颈椎病','腰椎间盘突出','鼠标手'],
+    tips:['每 45 分钟起身活动一下','调整坐姿与屏幕高度,避免低头驼背','坚持颈、腰部拉伸']
+  },
+  {
+    name:'外卖终身会员', emoji:'🛵', color:'#ef4444',
+    verdict:'你的厨房已改造成储物间,肠胃长期接待重油重盐贵宾。',
+    prescription:'医嘱:偶尔让你的胃也吃点"家常菜"。',
+    risks:['高血压','高血脂','肥胖'],
+    tips:['逐步减少外卖频率','控盐控油,清淡饮食','三餐规律,别暴饮暴食']
+  },
+  {
+    name:'屏幕原住民', emoji:'👀', color:'#38bdf8',
+    verdict:'你的眼球比手机先没电,干眼症已在路上签收。',
+    prescription:'医嘱:多眨眼,别让眼睛和屏幕"绑定终生"。',
+    risks:['干眼症','视疲劳','眼调节功能下降'],
+    tips:['记住 20-20-20 法则:每 20 分钟看远处 20 秒','有意识地多眨眼','屏幕调暗,夜间开护眼模式']
+  },
+  {
+    name:'情绪内耗冠军', emoji:'🌀', color:'#34d399',
+    verdict:'你的脑内 24 小时循环演出,身体在替焦虑默默买单。',
+    prescription:'医嘱:给大脑开个免打扰,别让它深夜开例会。',
+    risks:['焦虑','失眠','肠易激综合征'],
+    tips:['用运动释放压力,别让情绪憋在体内','睡前冥想或放下手机,给大脑"下班"','长期紧绷可考虑寻求专业帮助']
+  },
+  {
+    name:'过敏星球移民', emoji:'🤧', color:'#fbbf24',
+    verdict:'你来自一个对空气、灰尘、猫毛都过敏的星球,换季就是你的渡劫日。',
+    prescription:'医嘱:随身备好纸巾,和过敏原保持"社交距离"。',
+    risks:['过敏性鼻炎','哮喘','湿疹'],
+    tips:['换季 / 花粉季出门戴口罩,减少外出','保持居家清洁,勤换床单被套','反复过敏建议查过敏原,及时就医']
+  }
+];
+
+// ==================== 题目(打乱顺序) ====================
+// p = 人设索引,opts = [文字, 分数]
+const QUESTIONS = [
+  {p:0, q:'你通常几点睡?', opts:[['22 点前',0],['23 点左右',1],['凌晨 0-1 点',2],['凌晨 2 点以后',3]]},
+  {p:4, q:'每天盯屏幕(手机+电脑)大概多久?', opts:[['4 小时以内',0],['4-8 小时',1],['8-12 小时',2],['12 小时以上',3]]},
+  {p:2, q:'你每天大概坐多久?', opts:[['不到 4 小时',0],['4-6 小时',1],['6-9 小时',2],['9 小时以上',3]]},
+  {p:1, q:'奶茶 / 甜点一周几次?', opts:[['几乎不碰',0],['1-2 次',1],['3-5 次',2],['每天或一天多次',3]]},
+  {p:5, q:'睡前脑子会不停想事情吗?', opts:[['基本不会',0],['偶尔',1],['经常翻来覆去',2],['每天脑内循环演出',3]]},
+  {p:3, q:'一周点几次外卖?', opts:[['几乎不点',0],['1-3 次',1],['4-6 次',2],['顿顿都是外卖',3]]},
+  {p:6, q:'换季或春天,你会喷嚏连击、眼睛发痒吗?', opts:[['完全不会',0],['偶尔打几个喷嚏',1],['经常,鼻子眼睛都难受',2],['一到换季就"渡劫"',3]]},
+
+  {p:0, q:'睡前最后一件放不下的事是?', opts:[['闭眼就能睡',0],['看会儿手机',1],['刷视频停不下来',2],['追剧/打游戏停不下来',3]]},
+  {p:1, q:'渴了首选喝什么?', opts:[['白开水',0],['茶 / 无糖饮料',1],['果汁 / 运动饮料',2],['奶茶 / 可乐',3]]},
+  {p:4, q:'眼睛会干涩疲劳吗?', opts:[['基本不会',0],['偶尔',1],['经常',2],['天天,离不开眼药水',3]]},
+  {p:2, q:'你平时看手机的姿势?', opts:[['平视举高',0],['微微低头',1],['低头驼背',2],['窝在床上/沙发扭曲着看',3]]},
+  {p:6, q:'接触灰尘、猫毛、花粉时,你会?', opts:[['完全没反应',0],['偶尔鼻子痒',1],['打喷嚏流鼻涕',2],['直接起疹子 / 喘不过气',3]]},
+  {p:5, q:'一点小事你会纠结多久?', opts:[['很快放下',0],['想一会儿',1],['纠结大半天',2],['反复咀嚼好几天',3]]},
+  {p:3, q:'自己做饭的频率?', opts:[['天天做',0],['偶尔做',1],['几乎不做',2],['厨房是摆设',3]]},
+
+  {p:1, q:'面对甜食你的状态是?', opts:[['能克制',0],['偶尔想吃',1],['忍不住来一口',2],['上瘾,不吃难受',3]]},
+  {p:0, q:'第二天早上通常是?', opts:[['精神饱满',0],['有点困但能撑',1],['全靠咖啡续命',2],['咖啡都续不动了',3]]},
+  {p:4, q:'睡前最后看的是什么?', opts:[['书 / 不看屏幕',0],['偶尔刷一下',1],['刷到眼皮打架',2],['关了灯摸黑继续刷',3]]},
+  {p:2, q:'会腰酸背痛吗?', opts:[['基本没有',0],['偶尔',1],['经常',2],['天天,已成习惯',3]]},
+  {p:6, q:'你的皮肤会莫名发痒、起红疹吗?', opts:[['基本不会',0],['偶尔',1],['经常',2],['常年湿疹 / 荨麻疹反复',3]]},
+  {p:5, q:'你对未来的感觉是?', opts:[['挺坦然的',0],['偶尔焦虑',1],['常感压力',2],['长期紧绷,睡不好',3]]},
+  {p:3, q:'你的口味偏好?', opts:[['偏清淡',0],['正常',1],['偏重口',2],['无辣不欢/重油重盐',3]]},
+];
+
+// ==================== 状态 ====================
+let idx = 0;                                  // 当前题索引
+let scores = new Array(7).fill(0);            // 7 个人设各自得分
+let answers = new Array(QUESTIONS.length).fill(-1); // 每题所选选项索引
+
+// ==================== 页面切换 ====================
+function show(id){
+  ['screen-start','screen-quiz','screen-result'].forEach(s=>{
+    document.getElementById('screen-'+s).style.display = (s===id)?'block':'none';
+  });
+}
+function startQuiz(){
+  idx = 0; scores = new Array(7).fill(0); answers = new Array(QUESTIONS.length).fill(-1);
+  show('quiz'); renderQuestion();
+}
+function restart(){ show('start'); }
+
+// ==================== 做题 ====================
+function renderQuestion(){
+  const q = QUESTIONS[idx];
+  document.getElementById('q-count').textContent = '第 ' + (idx+1) + ' / ' + QUESTIONS.length + ' 题';
+  document.getElementById('progress-fill').style.width = ((idx) / QUESTIONS.length * 100) + '%';
+  document.getElementById('q-text').textContent = q.q;
+
+  const optBox = document.getElementById('q-opts');
+  optBox.innerHTML = '';
+  q.opts.forEach((opt, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt' + (answers[idx]===i ? ' picked' : '');
+    btn.textContent = opt[0];
+    btn.onclick = ()=> selectOption(i);
+    optBox.appendChild(btn);
+  });
+}
+function selectOption(i){
+  const q = QUESTIONS[idx];
+  if(answers[idx] !== -1){ scores[q.p] -= q.opts[answers[idx]][1]; } // 减去旧分
+  answers[idx] = i;
+  scores[q.p] += q.opts[i][1];
+
+  if(idx < QUESTIONS.length - 1){ idx++; renderQuestion(); }
+  else { showResult(); }
+}
+function prevQuestion(){
+  if(idx === 0) return;
+  idx--; renderQuestion();
+}
+
+// ==================== 结果 ====================
+function showResult(){
+  // 找主诊断与次诊断
+  const sorted = scores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
+  const main = sorted[0].i;
+  const second = sorted[1];
+  const showSecond = second && second.v >= 5 && second.v > 0;
+
+  const p = PROFILES[main];
+  const hero = document.getElementById('result-hero');
+  hero.style.borderColor = p.color;
+  hero.style.background = 'linear-gradient(180deg, rgba(255,255,255,.02), '+ p.color +'22)';
+
+  document.getElementById('r-emoji').textContent = p.emoji;
+  document.getElementById('r-name').textContent = p.name;
+  document.getElementById('r-name').style.color = p.color;
+  document.getElementById('r-verdict').textContent = p.verdict;
+  document.getElementById('r-prescription').textContent = p.prescription;
+
+  const risks = document.getElementById('r-risks');
+  risks.innerHTML = '';
+  p.risks.forEach(r=>{
+    const t = document.createElement('span');
+    t.className = 'risk-tag'; t.textContent = '⚠ ' + r;
+    risks.appendChild(t);
+  });
+
+  const tips = document.getElementById('r-tips');
+  tips.innerHTML = '';
+  p.tips.forEach(t=>{
+    const li = document.createElement('li'); li.textContent = t; tips.appendChild(li);
+  });
+
+  // 次诊断
+  const secBox = document.getElementById('r-second');
+  if(showSecond){
+    const sp = PROFILES[second.i];
+    secBox.innerHTML = '<div class="second-badge">💊 附带诊断:<b>' + sp.emoji + ' ' + sp.name + '</b> · ' + sp.verdict + '</div>';
+  } else {
+    secBox.innerHTML = '';
+  }
+
+  // 条形图
+  const bars = document.getElementById('r-bars');
+  bars.innerHTML = '';
+  PROFILES.forEach((prof, i)=>{
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML =
+      '<span class="b-emoji">'+prof.emoji+'</span>' +
+      '<span class="b-name">'+prof.name+'</span>' +
+      '<span class="b-track"><span class="b-fill" data-w="'+(scores[i]/9*100)+'" style="background:'+prof.color+'"></span></span>' +
+      '<span class="b-score">'+scores[i]+'</span>';
+    bars.appendChild(row);
+  });
+  // 动画:延迟设置宽度
+  setTimeout(()=>{
+    document.querySelectorAll('.b-fill').forEach(el=>{ el.style.width = el.dataset.w + '%'; });
+  }, 100);
+
+  document.getElementById('r-note').textContent =
+    '⚠️ 本测试测的是「生活方式风险倾向」,仅供娱乐与健康科普,不构成医学诊断。所列疾病为相关生活方式(熬夜 / 高糖 / 久坐 / 盯屏等)在流行病学上已知关联的健康问题,不代表个体必然患病。身体如有不适,请及时就医。';
+
+  show('result');
+  window.scrollTo(0,0);
+}
+
+// ==================== 复制报告 ====================
+function copyResult(){
+  const sorted = scores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
+  const p = PROFILES[sorted[0].i];
+  const lines = [
+    '【现代病体质图鉴】报告',
+    '我的确诊人设:' + p.emoji + ' ' + p.name,
+    p.verdict,
+    '⚠️ 高危预警:' + p.risks.join('、'),
+    '💡 自救建议:' + p.tips.join(';'),
+    '(纯属娱乐,非医疗诊断)'
+  ];
+  const text = lines.join('\n');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>{
+      alert('已复制到剪贴板,去朋友圈晒一下吧!');
+    });
+  } else {
+    prompt('复制下面的报告:', text);
+  }
+}
+</script>
+</body>
+</html>
