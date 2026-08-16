@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>现代病体质图鉴</title>
+<title>领取你的健康余额</title>
 <style>
 :root{
   --bg:#1a1a1a;--card:#242424;--text:#eee;--dim:#999;--border:#3a3a3a;
@@ -103,7 +103,7 @@ h1{text-align:center;font-size:1.3rem;letter-spacing:4px;margin-bottom:6px;}
 
   <!-- ============ 开始页 ============ -->
   <div id="screen-start">
-    <h1>📖 现代病体质图鉴</h1>
+    <h1>💰 领取你的健康余额</h1>
     <p class="sub">测测你是哪一款「体质」</p>
     <div class="card">
       <div class="hero-emoji">🩺</div>
@@ -247,7 +247,7 @@ let answers = new Array(QUESTIONS.length).fill(-1); // 每题所选选项索引
 
 // ==================== 页面切换 ====================
 function show(id){
-  ['screen-start','screen-quiz','screen-result'].forEach(s=>{
+  ['start','quiz','result'].forEach(s=>{
     document.getElementById('screen-'+s).style.display = (s===id)?'block':'none';
   });
 }
@@ -360,7 +360,7 @@ function copyResult(){
   const sorted = scores.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
   const p = PROFILES[sorted[0].i];
   const lines = [
-    '【现代病体质图鉴】报告',
+    '【领取你的健康余额】报告',
     '我的确诊人设:' + p.emoji + ' ' + p.name,
     p.verdict,
     '⚠️ 高危预警:' + p.risks.join('、'),
