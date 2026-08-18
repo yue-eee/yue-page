@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌙 梦境模拟器</title>
+<style>
+:root{--bg:#0a0614;--text:#c8bfe0;--accent:#a08cd8;--choice:#e0d0f0;--dim:#6a5a88;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'PingFang SC','Noto Serif SC','STSong','Georgia',serif;
+  background:var(--bg);
+  background-image:radial-gradient(ellipse at 50% 20%,#1a1030 0%,#0a0614 70%);
+  color:var(--text);min-height:100vh;line-height:2;
+  display:flex;align-items:center;justify-content:center;
+  user-select:none;overflow-x:hidden;
+}
+.container{max-width:680px;width:100%;padding:30px 24px;position:relative;}
+
+/* Floating particles */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.particle{position:absolute;width:2px;height:2px;background:var(--accent);border-radius:50%;opacity:0;animation:floatUp 6s ease-in infinite;animation-delay:var(--d);}
+@keyframes floatUp{0%{opacity:0;transform:translateY(100vh) scale(0);}20%{opacity:0.6;}80%{opacity:0.2;}100%{opacity:0;transform:translateY(-10vh) scale(3);}}
+
+.content{position:relative;z-index:1;}
+
+/* Scene text */
+.scene-text{
+  font-size:1.05rem;letter-spacing:1px;margin-bottom:28px;
+  animation:fadeIn .8s ease-out;
+  border-left:2px solid rgba(160,140,216,.3);
+  padding-left:18px;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* Depth indicator */
+.depth-bar{font-size:.7rem;color:var(--dim);letter-spacing:3px;margin-bottom:14px;text-align:center;}
+.depth-bar span{color:var(--accent);}
+
+/* Choices */
+.choices{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.choice-btn{
+  padding:14px 20px;border-radius:12px;
+  background:rgba(160,140,216,.06);border:1px solid rgba(160,140,216,.18);
+  color:var(--choice);cursor:pointer;font-size:.92rem;letter-spacing:1.5px;
+  transition:all .3s ease;text-align:left;font-family:inherit;display:flex;gap:12px;
+}
+.choice-btn:hover{background:rgba(160,140,216,.14);border-color:rgba(160,140,216,.45);transform:translateX(6px);}
+.choice-btn .num{color:var(--accent);font-weight:700;font-size:.85rem;min-width:22px;}
+
+/* Ending */
+.ending-tag{
+  display:inline-block;padding:6px 18px;border-radius:20px;
+  font-size:.75rem;letter-spacing:3px;margin-bottom:16px;
+  border:1px solid;
+}
+.ending-peace{color:#8cd8a0;border-color:rgba(140,216,160,.4);}
+.ending-trap{color:#d8c08c;border-color:rgba(216,192,140,.4);}
+.ending-night{color:#d88c8c;border-color:rgba(216,140,140,.4);}
+.ending-trans{color:#c0b8f0;border-color:rgba(192,184,240,.4);}
+
+.restart-btn{
+  display:inline-block;margin-top:20px;padding:10px 24px;border-radius:20px;
+  background:rgba(160,140,216,.1);border:1px solid rgba(160,140,216,.3);
+  color:var(--accent);cursor:pointer;font-size:.8rem;letter-spacing:2px;
+  transition:.3s;font-family:inherit;
+}
+.restart-btn:hover{background:rgba(160,140,216,.2);}
+
+.scene-img{font-size:2.5rem;text-align:center;margin-bottom:12px;opacity:.7;}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+// ==================== SCENE DATA ====================
+const S = {
+// ── 第一层：坠入 ──
+start:{
+  emoji:'💫',
+  depth:1,
+  text:`你感到身体在<strong>向下坠落</strong>。
+
+周围没有天花板，没有地板，没有墙壁——只有一片无边无际的<em>深紫色虚空</em>。无数细碎的光点在你身旁缓缓飘过，像萤火，又像破碎的星尘。
+
+远处的黑暗中，有一团<strong>温暖的金色光晕</strong>在闪烁。你隐约听到有人在呼唤你的名字，声音轻得像风吹过纱帘。
+
+你的意识<strong>半梦半醒</strong>——你知道自己在做梦，却无法睁开眼睛。`,
+  choices:[
+    {text:'伸手触碰那团金色光晕', next:'garden'},
+    {text:'闭上眼睛，任由身体下坠', next:'void'},
+    {text:'拼命挣扎，试图强行醒来', next:'corridor'},
+    {text:'保持不动，静静观察周围', next:'mirror_room'},
+  ]
+},
+
+// ══════ 美梦分支 ══════
+garden:{
+  emoji:'🌸',
+  depth:2,
+  text:`你触碰了那团光。一瞬间，坠落停止了。
+
+你站在一座<strong>不可思议的花园</strong>里。天空是淡紫色的，三颗月亮挂在不同的高度，散发着柔和的银光。脚下的草地不是绿色的——是一种泛着微光的<em>珍珠白</em>，每踩一步都会漾开一圈淡淡的光晕。
+
+花朵们在你经过时会<strong>轻轻转向你</strong>，仿佛在注视。空气里弥漫着一种熟悉的香味，像小时候外婆家院子里的栀子花。
+
+远处有一座<strong>水晶凉亭</strong>，里面有个人影正向你招手。`,
+  choices:[
+    {text:'走向水晶凉亭，看看是谁在等你', next:'pavilion'},
+    {text:'蹲下来仔细端详那些发光的花', next:'flowers'},
+    {text:'转身离开花园，去看看别处', next:'ocean_shore'},
+  ]
+},
+
+pavilion:{
+  emoji:'🏛️',
+  depth:3,
+  text:`你走近凉亭。那个人影渐渐清晰——是<strong>你最怀念却再也见不到的那个人</strong>。
+
+Ta对你微笑，眼神温柔得像一汪温水。Ta没有说话，只是伸出手，掌心向上。
+
+凉亭外，花园变得更美了。粉色的花瓣从天空缓缓飘落，整个世界都笼罩在一层<em>金色的柔光</em>里。这里没有痛苦，没有遗憾，只有无尽的温暖。
+
+你忽然意识到——<strong>留下来，就可以永远和Ta在一起</strong>。`,
+  choices:[
+    {text:'握住Ta的手，选择留下', next:'end_trapped'},
+    {text:'对Ta说「我很想你，但我该走了」', next:'end_peace'},
+    {text:'问Ta：「这里是真实的吗？」', next:'pavilion_ask'},
+  ]
+},
+
+pavilion_ask:{
+  emoji:'🌫️',
+  depth:4,
+  text:`Ta的笑容微微凝滞了一瞬。
+
+「真实？」Ta的声音飘渺而遥远，「你想要的真实，是什么呢？」
+
+凉亭的柱子开始<strong>变得透明</strong>，你能看到柱子后面不是花园——而是一片流动的、像水银一样的虚空。整个世界像一幅正在融化的画。
+
+Ta的身影开始<strong>模糊</strong>，但那双眼睛依然温柔地看着你，等待着你的回答。`,
+  choices:[
+    {text:'「我想要真相，哪怕残酷」', next:'end_transcend'},
+    {text:'「算了……就这样吧，我不想知道了」', next:'end_trapped'},
+  ]
+},
+
+flowers:{
+  emoji:'🌺',
+  depth:3,
+  text:`你蹲下来，仔细观察一朵散发着淡蓝色光芒的花。
+
+花瓣上<strong>浮动着细小的文字</strong>——是你小时候写过的日记、说过的话、许过的愿望。每一片花瓣都承载着你的一段记忆。
+
+花朵的根须扎在发光的土壤里，顺着根须往下看，土壤之下是<strong>一面巨大的镜子</strong>，映照着你自己的倒影。但镜中的你，眼睛闭着，表情安详。
+
+一只手突然搭在你肩上。`,
+  choices:[
+    {text:'回头看看是谁', next:'garden_guide'},
+    {text:'触碰花瓣上的文字', next:'memory_dive'},
+    {text:'打碎那面镜子', next:'mirror_break'},
+  ]
+},
+
+garden_guide:{
+  emoji:'🧙',
+  depth:4,
+  text:`身后站着一个<strong>老者</strong>。他的胡须像藤蔓一样生长，眼睛里映着星光。
+
+「你已经发现了，」他说，声音像远处的钟声，「这片花园是由你的<strong>记忆</strong>构成的。每一朵花，都是一段你不愿遗忘的往事。」
+
+他指向远处一扇凭空悬浮的<strong>木门</strong>，「那扇门通往清醒的世界。但你也可以留在这里，继续沉浸在这些美好的记忆里。选择权在你。」`,
+  choices:[
+    {text:'走向那扇门', next:'end_peace'},
+    {text:'「我想再看看这些花」', next:'end_trapped'},
+  ]
+},
+
+memory_dive:{
+  emoji:'📖',
+  depth:5,
+  text:`你的指尖触碰到花瓣上的文字，整个世界<strong>骤然翻转</strong>。
+
+你被拉进了自己的记忆里——你重新经历了那些最美好的瞬间：第一次被拥抱、第一次在海边奔跑、某个夏夜的星空下许愿。一切都如此真实，如此温暖。
+
+但你注意到一个细节：<strong>每一段记忆的角落里，都站着一个模糊的黑色人影</strong>，一动不动地注视着你。它是你记忆中的陌生客，还是你遗忘的恐惧？
+
+你可以选择留在这片记忆海洋，或者循着黑色人影去探寻真相。`,
+  choices:[
+    {text:'留在温暖的记忆里', next:'end_trapped'},
+    {text:'走向那个黑色人影', next:'end_transcend'},
+    {text:'尝试同时抓住记忆和真相', next:'mirror_room'},
+  ]
+},
+
+mirror_break:{
+  emoji:'🪞',
+  depth:5,
+  text:`你一拳砸向地面的镜子。<strong>哗啦——</strong>
+
+碎片四溅。但每一片碎片里，都有一个<strong>不同的你</strong>：有的在哭泣，有的在笑，有的愤怒，有的安详。无数的你从无数个角度凝视着你。
+
+花园开始<strong>崩塌</strong>。花瓣枯萎，月光黯淡。但在崩裂的缝隙中，你看到了一线<strong>刺眼的白光</strong>——那是清醒世界的光芒。
+
+镜子碎片中，有一个声音问你：「你准备好了吗？」`,
+  choices:[
+    {text:'迎接那道白光', next:'end_transcend'},
+    {text:'试图把碎片拼回去', next:'corridor'},
+  ]
+},
+
+ocean_shore:{
+  emoji:'🌊',
+  depth:3,
+  text:`你走出花园，发现自己站在一片<strong>琉璃般的海岸</strong>上。
+
+海水不是蓝色的——是透明的，像液态的玻璃，能看到海底深处有<strong>沉没的城堡和街道</strong>。浪花拍在岸边时发出清脆的声音，像风铃。
+
+天空中有巨大的<strong>鲸鱼在游动</strong>——不是在水中，而是在空气里，缓缓地、安静地划过天穹。它们发出低沉的鸣叫，震动着你的胸腔。
+
+一艘发光的小船漂到你的脚边。`,
+  choices:[
+    {text:'坐上小船，驶向大海', next:'end_trapped'},
+    {text:'潜入海底看看沉没的城市', next:'sunken_city'},
+    {text:'转身沿着海岸走回雾中', next:'void'},
+  ]
+},
+
+sunken_city:{
+  emoji:'🏛️',
+  depth:4,
+  text:`你潜入透明的海水。身体没有被打湿——在这里，<strong>你可以自由呼吸</strong>。
+
+沉没的城市是倒置的——高楼向下生长，街道像天花板一样悬在头顶。你遇到的每个人都在<strong>倒着行走</strong>，脸上带着平静的微笑。
+
+一个倒立的小女孩走到你面前，递给你一颗<strong>发光的小石子</strong>。「这是你掉的东西，」她倒着说完，就跑开了。
+
+石子上刻着一行字：「<em>醒来的钥匙一直在你口袋里</em>。」`,
+  choices:[
+    {text:'握紧石子，向上游去', next:'end_transcend'},
+    {text:'和倒立的人们一起生活下去', next:'end_trapped'},
+  ]
+},
+
+// ══════ 噩梦分支 ══════
+corridor:{
+  emoji:'🏚️',
+  depth:2,
+  text:`你拼命挣扎，身体猛地<strong>砸在一条走廊的地板上</strong>。
+
+这是一条没有尽头的走廊。墙壁上贴着泛黄的旧壁纸，上面有<strong>发霉的深色水渍</strong>，形状像一张张扭曲的人脸。头顶的灯光忽明忽暗，发出低沉的嗡嗡声。
+
+走廊深处传来<strong>沉重的脚步声</strong>，一下、一下，正在向你靠近。
+
+你的心跳开始加速。`,
+  choices:[
+    {text:'向走廊深处走去，面对声音来源', next:'shadow_face'},
+    {text:'转身逃跑，寻找出口', next:'endless_doors'},
+    {text:'靠墙闭眼，告诉自己这只是一场梦', next:'lucid_moment'},
+  ]
+},
+
+shadow_face:{
+  emoji:'👁️',
+  depth:3,
+  text:`你走向那个声音。走廊的尽头，站着一个<strong>巨大的黑影</strong>。
+
+它没有五官，但你却能感觉到它在<strong>注视着你</strong>。它的轮廓不断变化——有时候像一个人，有时候像一头兽，有时候像一团烟雾。
+
+它说话了。声音不是从外部传来的，而是<strong>直接在你脑海中响起</strong>：「你一直在逃避我。但我就是你。」`,
+  choices:[
+    {text:'「你是我内心深处的恐惧」', next:'shadow_accept'},
+    {text:'挥拳打向黑影', next:'shadow_fight'},
+    {text:'转身就跑', next:'endless_doors'},
+  ]
+},
+
+shadow_accept:{
+  emoji:'🖤',
+  depth:4,
+  text:`「是的，」你承认了，「你是我一直不敢面对的那部分自己。」
+
+黑影<strong>缩小</strong>了。它变成了一个和你一样高的人形，轮廓渐渐清晰——那是<strong>小时候的你</strong>，孤单地站在角落里，眼睛里满是不安。
+
+你蹲下来，抱住了当年的自己。黑影<strong>融化</strong>成一团温暖的光，融入你的胸口。
+
+走廊开始消失。在一切消散之前，你看到了一扇<strong>明亮的门</strong>。`,
+  choices:[
+    {text:'推开那扇门', next:'end_peace'},
+    {text:'留在黑暗中，继续探索梦的深处', next:'end_transcend'},
+  ]
+},
+
+shadow_fight:{
+  emoji:'⚡',
+  depth:4,
+  text:`你的拳头穿过黑影——它没有实体，但你的手被<strong>冰冷的黑暗</strong>包裹了。
+
+黑影<strong>膨胀</strong>，充满了整个走廊。你被吞没了。四周一片漆黑，你听到无数个声音在你耳边低语：你的后悔、你的失败、你的每一次恐惧，全部被放大了一万倍。
+
+但在这片黑暗的正中央，有一粒<strong>微小的光点</strong>在闪烁。那是你自己的意志。很小，但还没熄灭。`,
+  choices:[
+    {text:'拼尽全力游向那粒光点', next:'end_transcend'},
+    {text:'放弃挣扎，被黑暗吞没', next:'end_nightmare'},
+    {text:'大声喊出自己最重要的那个名字', next:'end_peace'},
+  ]
+},
+
+endless_doors:{
+  emoji:'🚪',
+  depth:3,
+  text:`你疯狂地奔跑。走廊两侧出现了<strong>无数扇门</strong>，每一扇都一模一样。
+
+你拉开一扇门——里面是<strong>你童年时最害怕的那个房间</strong>。再拉一扇——是一面镜子，镜中的你满脸是泪。又一扇——一片空白，什么也没有。
+
+脚步声越来越近了。但这一次，你听到的不是怪物——而是<strong>你自己的脚步声</strong>，从身后追来的，是你自己。`,
+  choices:[
+    {text:'停下脚步，转身面对追逐你的自己', next:'shadow_accept'},
+    {text:'继续开门，找一扇能出去的门', next:'door_found'},
+    {text:'坐在地上，不再逃跑', next:'lucid_moment'},
+  ]
+},
+
+door_found:{
+  emoji:'🌅',
+  depth:4,
+  text:`在第一千扇门后面，你看到了<strong>不一样的景象</strong>。
+
+不是房间，不是镜子——是一片<strong>广阔的盐湖</strong>。水面像一整块完美的镜子，倒映着晨曦的天空。湖中央站着一个人。
+
+那个人回过头——是你自己，穿着平时最常穿的那件衣服，表情平静。「你找了很久，」Ta说，「其实出口一直在你身后。」`,
+  choices:[
+    {text:'走向湖中央的自己', next:'end_peace'},
+    {text:'回头看看来时的方向', next:'end_transcend'},
+  ]
+},
+
+lucid_moment:{
+  emoji:'💡',
+  depth:3,
+  text:`你闭上眼睛，深吸一口气，对自己说：「<strong>这只是一场梦。</strong>」
+
+这句话像魔法一样。周围的走廊<strong>变得透明</strong>了。你能看到"真实世界"的轮廓——你躺在床上，窗帘透进微弱的晨光。你就在那里，差一点点就能醒来。
+
+但梦境的引力还在拉扯着你。它不甘心放你走。黑暗在诱惑你：「再睡一会儿吧……还早呢……」`,
+  choices:[
+    {text:'坚定地睁开眼睛', next:'end_peace'},
+    {text:'放松身体，再睡一会儿', next:'corridor_lucid'},
+  ]
+},
+
+corridor_lucid:{
+  emoji:'🌀',
+  depth:4,
+  text:`你选择再睡一会儿。但因为你已经<strong>意识到自己在做梦</strong>，这个梦变得不一样了。
+
+走廊变成了<strong>可塑的</strong>。你伸手一指，墙壁就化成了花海。你一挥，天空就落下了糖果。你可以在这里做任何事情——创造任何世界，体验任何人生。
+
+这是一个<strong>清醒梦</strong>。你拥有了神的力量，代价是——你不再确定自己还想不想醒来。`,
+  choices:[
+    {text:'玩够了，决定醒来', next:'end_peace'},
+    {text:'继续创造世界，乐此不疲', next:'end_trapped'},
+    {text:'尝试创造一扇"不可能的门"', next:'end_transcend'},
+  ]
+},
+
+// ══════ 迷失分支 ══════
+void:{
+  emoji:'🌌',
+  depth:2,
+  text:`你闭上眼，任由身体在虚空中<strong>漂浮</strong>。
+
+坠落感消失了。取而代之的是一种奇异的<strong>失重</strong>感，像漂浮在羊水里。周围不再是深紫色——是一片温柔的、没有边际的<strong>灰蓝色</strong>。
+
+你听到远处传来模糊的对话声，像收音机串台了一样——你在里面听到了自己的声音、陌生人的声音、以及一些你从未听过的语言。
+
+一只<strong>蝴蝶</strong>不知从哪里出现，在你眼前轻轻振翅。它的翅膀上有星河的图案。`,
+  choices:[
+    {text:'跟随蝴蝶', next:'clock_tower'},
+    {text:'游向对话声的源头', next:'market'},
+    {text:'继续悬浮，哪里也不去', next:'end_trapped'},
+  ]
+},
+
+clock_tower:{
+  emoji:'⏰',
+  depth:3,
+  text:`蝴蝶带你来到一座<strong>逆向行走的钟楼</strong>前。
+
+钟楼的指针是逆时针转的。每转一圈，你就看到一段<strong>关于过去的画面</strong>——但和你记忆中的不太一样。有些细节变了，有些人的脸换了，有些结局不一样了。
+
+这是被篡改的记忆？还是<strong>平行世界</strong>里另一个你的人生？
+
+蝴蝶停在你的肩上，化作一只<strong>钥匙</strong>。`,
+  choices:[
+    {text:'用钥匙打开钟楼的门', next:'end_transcend'},
+    {text:'继续观察钟面上的不同人生', next:'end_trapped'},
+    {text:'把钥匙扔进虚空', next:'market'},
+  ]
+},
+
+market:{
+  emoji:'🏮',
+  depth:3,
+  text:`你游向声音的源头，发现自己走进了一个<strong>奇异的市场</strong>。
+
+摊位上卖的不是商品——是<strong>情绪</strong>。装在玻璃瓶里的欢愉、叠在布匹上的勇气、吊在屋檐下的遗憾。每一个路过的人都在讨价还价。
+
+一个蒙面的摊主向你招手：「你身上带着<strong>一件很珍贵的东西</strong>——你的清醒。要不要拿出来换点什么？」
+
+你低头看自己的手，手心放着一颗<strong>微光闪烁的珠子</strong>。那是你还记得自己是谁的证明。`,
+  choices:[
+    {text:'把珠子交给摊主，换一样情绪', next:'emotion_trade'},
+    {text:'「不换」，握紧珠子转身离开', next:'clock_tower'},
+    {text:'问摊主：「这里到底是什么地方？」', next:'market_truth'},
+  ]
+},
+
+emotion_trade:{
+  emoji:'💎',
+  depth:4,
+  text:`摊主接过你的珠子，递给你一个<strong>发光的瓶子</strong>。
+
+你打开瓶子——里面是一种你<strong>从未体验过的感觉</strong>。不是快乐，不是悲伤，而是一种前所未有的宁静，像宇宙诞生之前的安宁。
+
+但同时，你注意到自己的手开始<strong>变得透明</strong>。你正在失去自己的存在感。那些路过的人不再看你，仿佛你已经不存在了。
+
+你低头看脚下的地面——那里没有影子。`,
+  choices:[
+    {text:'抢回珠子，逃离市场', next:'end_transcend'},
+    {text:'接受这种消失的感觉', next:'end_trapped'},
+  ]
+},
+
+market_truth:{
+  emoji:'🎭',
+  depth:4,
+  text:`摊主摘下蒙面布——下面<strong>什么都没有</strong>。
+
+「这里？」一个空洞的声音从空气中传来，「这里是<strong>梦与现实的夹缝</strong>。来这的人要么永远留在这里做交易，要么找到回去的路。很少有人找到过。」
+
+空荡荡的袍子指了指市场尽头的一堵<strong>巨大的玻璃墙</strong>。墙外是一片白色的光。「那边就是醒来的世界。但你要从这堵墙里走过去——不是打破它，是<em>看穿它</em>。」`,
+  choices:[
+    {text:'走向玻璃墙，试着看穿它', next:'end_transcend'},
+    {text:'「太麻烦了」，在市场里闲逛', next:'end_trapped'},
+  ]
+},
+
+mirror_room:{
+  emoji:'🪞',
+  depth:2,
+  text:`你保持不动，静静观察。虚空渐渐<strong>凝聚成形</strong>——你发现自己站在一个<strong>满是镜子的房间里</strong>。
+
+每一面镜子里都有一个你，但都<strong>有一点不同</strong>：有的你穿着不一样的衣服，有的你看起来更老或更年轻，有的你性别不同，有的你——根本不是人类。
+
+突然，所有镜子里的你<strong>同时转头</strong>，看向房间中央的你。
+
+其中一个镜中的你开口了：「我们是你未选择的人生。每一个岔路口，你都留下了一个我们。」`,
+  choices:[
+    {text:'「那你们后悔吗？」', next:'mirror_talk'},
+    {text:'试图触碰镜面', next:'mirror_merge'},
+    {text:'找一面看起来最幸福的镜子走进去', next:'end_trapped'},
+  ]
+},
+
+mirror_talk:{
+  emoji:'💬',
+  depth:3,
+  text:`最靠近你的那个镜中人说：「后悔？<strong>我们是你后悔的集合</strong>。你没有选择的路、你没有说出口的话、你没有勇气做的事——都变成了我们。」
+
+另一个镜中的你补充道：「但你不需要我们。你只需要<strong>现在的你</strong>。那个会害怕、会犹豫、但依然在呼吸的你。」
+
+所有镜子开始<strong>发光</strong>，然后——裂开了。`,
+  choices:[
+    {text:'闭上眼睛，接受现在的自己', next:'end_transcend'},
+    {text:'「让我再看看那些可能的人生」', next:'end_trapped'},
+    {text:'伸手抓住离自己最近的镜子碎片', next:'end_nightmare'},
+  ]
+},
+
+mirror_merge:{
+  emoji:'🔄',
+  depth:3,
+  text:`你的手指触碰到镜面。镜面像水面一样<strong>泛起涟漪</strong>，你的手指穿了过去。
+
+一瞬间，所有镜中人的<strong>记忆涌入你的脑海</strong>——你体验到了所有未选择的人生的结局。太多了，太密集了，像一千万部电影同时在你眼前播放。
+
+你看到了自己的无数种死亡和重生。你是婴儿，是老人，是飞鸟，是星辰。
+
+当一切停止时，你还站在镜子房间里。但你知道——<strong>你已经不再是"你"了</strong>。`,
+  choices:[
+    {text:'作为全新的自己，推开醒来的门', next:'end_transcend'},
+    {text:'留在镜子房间，继续体验更多人生', next:'end_trapped'},
+  ]
+},
+
+// ══════ 四种结局 ══════
+end_peace:{
+  emoji:'🌅',
+  depth:'终',
+  ending:'peace',
+  endingName:'安稳苏醒',
+  text:`<strong>你睁开了眼睛。</strong>
+
+窗帘的缝隙里透进淡金色的晨光。空气中飘着楼下早餐摊的香味。你躺在床上，心跳平稳，四肢温暖。
+
+那些梦——花园、走廊、镜子、虚空——像退潮一样从你的意识中<em>缓缓退去</em>。你伸手摸到手机，时间是早上七点零三分。
+
+你做了几个深呼吸，感受着被子的重量、枕头的柔软、光脚踩在地板上的凉意。<strong>真实世界的质感如此清晰</strong>，清晰得让人想哭。
+
+你把梦境里的那一丝不安呼出体外，起身，拉开窗帘。窗外，世界照常运转。
+
+<em>——你安稳地醒来了。梦，终究只是梦。</em>`,
+  choices:[],
+},
+
+end_trapped:{
+  emoji:'💤',
+  depth:'终',
+  ending:'trap',
+  endingName:'永远困在美梦之中',
+  text:`你选择了留下。
+
+这里的天空永远不会暗，花朵永远不会枯萎，你怀念的人永远不会离开。<strong>每一天都是你想要的那一天</strong>——没有痛苦，没有遗憾，没有告别。
+
+但你偶尔会注意到一些细节：天空中的云永远停在同一个位置；路边的人会<strong>重复同样的话</strong>；你不小心割伤的手指从来不流血。
+
+你开始想——这是第几天了？
+
+第几百天？还是第几千天？时间在这里失去了意义。你的笑容<strong>渐渐变成了面具</strong>。你怀念的那个人的眼神，也渐渐变得空洞——毕竟，Ta只是你记忆里创造出来的影像。
+
+某一天深夜，你隐约听到<strong>从很远很远的地方</strong>传来一声铃响——是闹钟的声音。是有人在试图叫醒你。
+
+你伸手想去够那个声音，但花园太美好了，你选择把手收了回来。
+
+<em>——你永远活在了美梦里。但美梦做久了，也是另一种囚笼。</em>`,
+  choices:[],
+},
+
+end_nightmare:{
+  emoji:'🖤',
+  depth:'终',
+  ending:'night',
+  endingName:'被噩梦吞噬',
+  text:`黑暗<strong>吞没了一切</strong>。
+
+你最后看到的画面，是那条没有尽头的走廊，泛黄的壁纸，发霉的水渍，以及那个和你长得一模一样的黑影。它微笑着张开双臂，像拥抱一个老朋友。
+
+你无法再分辨什么是梦、什么是醒。你的意识被<strong>撕成碎片</strong>，散落在无数个平行梦境里。每一片碎片都在经历不同的恐惧——有的是跌入悬崖，有的是众目睽睽下赤身裸体，有的是失去了最重要的人。
+
+而那个"你"，作为完整的个体，已经不存在了。
+
+只有偶尔的、极其罕见的瞬间——当一阵风穿过走廊，当一束光不小心溜进黑暗——那些碎片会短暂地<strong>拼合在一起</strong>，让你在一秒钟之内，回想起自己曾经是谁。
+
+然后，又碎开。
+
+<em>——噩梦不会结束。它只会习惯你的存在，然后把你也变成它的一部分。</em>`,
+  choices:[],
+},
+
+end_transcend:{
+  emoji:'🌌',
+  depth:'终',
+  ending:'trans',
+  endingName:'看破梦境，超脱而出',
+  text:`<strong>一切都在崩塌。</strong>
+
+花园、走廊、镜子、虚空、钟楼——全部扭曲、溶解，化成一缕缕<strong>纯粹的光</strong>。
+
+你不是在"醒来"。你是在<strong>看穿</strong>——看穿了梦境是梦境，看穿了恐惧是幻觉，看穿了那个"我"本身也只是一个概念。你不再执着于醒或不醒，因为你明白了：<strong>醒与梦，不过是一体两面</strong>。
+
+光融化了你的身体，融化了你的意识，融化了你所有的记忆和身份。你不是"月月"，不是任何人，你只是<strong>一段正在发生的体验</strong>。
+
+然后，一种前所未有的<strong>自由</strong>包围了你。不再有边界，不再有定义，不再有恐惧。你可以成为任何事物——一阵风、一片海、一首歌的第一个音符——你也可以什么都不成为。
+
+而在某个维度里，你的身体翻了个身，嘴角带着一丝若有若无的微笑，继续安静地睡着。
+
+<em>——你没有醒来，也没有迷失。你超越了醒与梦的界限，成为了更大的自己。</em>`,
+  choices:[],
+},
+};
+
+// ==================== GAME STATE ====================
+let currentScene = 'start';
+let sceneHistory = [];
+let dreamDepth = 0;
+
+// ==================== RENDER ====================
+function render(){
+  const s = S[currentScene];
+  if (!s) return;
+  const isEnding = s.choices.length === 0;
+
+  let endingHTML = '';
+  if (isEnding && s.ending){
+    const cls = {peace:'ending-peace',trap:'ending-trap',night:'ending-night',trans:'ending-trans'}[s.ending]||'';
+    endingHTML = `<div class="ending-tag ${cls}">✦ ${s.endingName}</div>`;
+  }
+
+  let choicesHTML = '';
+  if (s.choices.length > 0){
+    choicesHTML = '<div class="choices">' + s.choices.map((c,i) => `
+      <button class="choice-btn" onclick="choose('${c.next}')">
+        <span class="num">${i+1}.</span> ${c.text}
+      </button>
+    `).join('') + '</div>';
+  }
+
+  const depthText = isEnding
+    ? `<div class="depth-bar">✦ 梦 境 终 局 ✦</div>`
+    : `<div class="depth-bar">第 <span>${typeof s.depth==='number'?s.depth:'?'}</span> 层梦境 · 深度 <span>${dreamDepth}</span></div>`;
+
+  document.getElementById('content').innerHTML = `
+    ${depthText}
+    <div class="scene-img">${s.emoji}</div>
+    ${endingHTML}
+    <div class="scene-text">${s.text}</div>
+    ${choicesHTML}
+    ${isEnding ? `<button class="restart-btn" onclick="restart()">🔄 重新入梦</button>` : ''}
+    ${!isEnding ? `<button class="restart-btn" onclick="restart()" style="margin-top:16px;opacity:.5;">↺ 放弃这场梦</button>` : ''}
+  `;
+
+  // Scroll to top
+  document.getElementById('content').scrollIntoView({behavior:'smooth'});
+}
+
+function choose(next){
+  sceneHistory.push(currentScene);
+  currentScene = next;
+  dreamDepth++;
+  render();
+}
+
+function restart(){
+  currentScene = 'start';
+  sceneHistory = [];
+  dreamDepth = 0;
+  render();
+}
+
+// ==================== PARTICLES ====================
+(function(){
+  const c = document.getElementById('particles');
+  for (let i=0;i<35;i++){
+    const d = document.createElement('div');
+    d.className = 'particle';
+    d.style.left = Math.random()*100+'%';
+    d.style.top = Math.random()*100+'%';
+    d.style.setProperty('--d', Math.random()*6+'s');
+    d.style.animationDuration = (4+Math.random()*8)+'s';
+    d.style.width = d.style.height = (1+Math.random()*2.5)+'px';
+    c.appendChild(d);
+  }
+})();
+
+// ==================== INIT ====================
+render();
+</script>
+</body>
+</html>

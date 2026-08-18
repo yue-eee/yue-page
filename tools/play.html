@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 小游戏</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'PingFang SC','Microsoft YaHei',sans-serif;
+  background:#1a1a2e;
+  background-image:radial-gradient(ellipse at 50% 30%, #2a1f3a 0%, #0f0a1a 100%);
+  color:#ddd;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  user-select:none;
+}
+.wrap{text-align:center;padding:30px;}
+.wrap h1{font-size:2rem;letter-spacing:6px;color:#f0d080;margin-bottom:8px;}
+.wrap .sub{font-size:.8rem;color:#888;letter-spacing:3px;margin-bottom:32px;}
+.cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;}
+.card{
+  display:block;width:240px;padding:30px 20px;border-radius:20px;
+  text-decoration:none;color:#ddd;transition:all .3s ease;
+  border:2px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.03);
+  backdrop-filter:blur(10px);
+}
+.card:hover{transform:translateY(-6px);}
+.card.fight:hover{border-color:rgba(224,80,64,.6);box-shadow:0 16px 40px rgba(224,80,64,.25);}
+.card.jewelry:hover{border-color:rgba(212,168,67,.6);box-shadow:0 16px 40px rgba(212,168,67,.25);}
+.card .icon{font-size:3.5rem;margin-bottom:12px;}
+.card .title{font-size:1.1rem;letter-spacing:3px;margin-bottom:6px;}
+.card .desc{font-size:.7rem;color:#888;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎮 小 游 戏</h1>
+  <p class="sub">选一个开始玩吧</p>
+  <div class="cards">
+    <a class="card fight" href="robot-fight.html">
+      <div class="icon">🤖</div>
+      <div class="title">机器人格斗</div>
+      <div class="desc">选角色 · 打沙包 · 双人对战</div>
+    </a>
+    <a class="card jewelry" href="jewelry-workshop.html">
+      <div class="icon">💎</div>
+      <div class="title">金银手镯工坊</div>
+      <div class="desc">选镯形 · 雕纹样 · 打磨抛光</div>
+    </a>
+  </div>
+</div>
+</body>
+</html>

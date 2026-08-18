@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目书 · 粉丝专属主页定制</title>
+    <style>
+        :root {
+            --bg: #faf9f7; --card: #fff; --primary: #5b4caf; --accent: #f0a060;
+            --text: #3a3540; --soft: #8a8490; --border: #e8e4ec;
+            --font: 'PingFang SC','Microsoft YaHei',sans-serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:2; padding:20px; }
+        .container { max-width:700px; margin:0 auto; background:var(--card); border-radius:16px; padding:40px 32px; box-shadow:0 2px 20px rgba(0,0,0,0.05); }
+
+        h1 { font-size:26px; letter-spacing:3px; text-align:center; margin-bottom:6px; }
+        .subtitle { text-align:center; font-size:14px; color:var(--soft); letter-spacing:4px; margin-bottom:32px; }
+        .divider { width:60px; height:2px; background:linear-gradient(90deg,transparent,var(--primary),transparent); margin:0 auto 32px; }
+
+        h2 { font-size:18px; letter-spacing:2px; margin:32px 0 14px; padding-bottom:10px; border-bottom:1.5px solid var(--border); display:flex; align-items:center; gap:8px; }
+        h2 .n { color:var(--primary); }
+        h3 { font-size:15px; letter-spacing:2px; margin:18px 0 8px; color:#5b4caf; }
+
+        p { font-size:14px; color:var(--soft); letter-spacing:1px; margin-bottom:10px; }
+        strong { color:var(--text); }
+
+        table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; letter-spacing:1px; }
+        th, td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+        th { background:#f8f7fa; color:var(--primary); font-weight:600; letter-spacing:2px; }
+        td { color:var(--soft); }
+
+        .highlight-box { background:#f8f7fa; border-left:3px solid var(--primary); padding:16px 20px; border-radius:0 10px 10px 0; margin:14px 0; font-size:13px; color:var(--soft); letter-spacing:1px; }
+        .highlight-box strong { color:var(--primary); }
+
+        ul, ol { margin:8px 0 8px 20px; font-size:13px; color:var(--soft); letter-spacing:1px; }
+        li { margin-bottom:6px; }
+
+        .flow { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center; margin:16px 0; font-size:14px; letter-spacing:2px; }
+        .flow-step { background:var(--border); padding:10px 18px; border-radius:10px; white-space:nowrap; color:var(--text); }
+        .flow-arrow { color:var(--primary); font-size:20px; }
+
+        .badge { display:inline-block; padding:4px 12px; border-radius:50px; font-size:11px; letter-spacing:2px; margin:2px 4px; }
+        .badge-green { background:#e8f5e9; color:#388e3c; }
+        .badge-blue { background:#e3f2fd; color:#1976d2; }
+        .badge-purple { background:#f3e5f5; color:#7b1fa2; }
+
+        .footer { text-align:center; margin-top:32px; padding-top:20px; border-top:1px solid var(--border); font-size:12px; color:#ccc; letter-spacing:2px; }
+
+        @media (max-width:480px) {
+            .container { padding:24px 16px; }
+            .flow { flex-direction:column; gap:4px; }
+            .flow-arrow { transform:rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>📘 粉丝专属主页 · 定制服务</h1>
+        <p class="subtitle">项目说明书 v1.0</p>
+        <div class="divider"></div>
+
+        <!-- 一、项目概述 -->
+        <h2><span class="n">一</span> 项目概述</h2>
+        <p>这是一个<strong>帮追星粉丝制作专属个人主页</strong>的定制服务。客户只需填写一张信息卡，无需任何技术基础，即可获得一个<strong>永久可访问、手机友好的个人粉丝站</strong>。</p>
+
+        <div class="highlight-box">
+            <strong>一句话介绍：</strong>填个表，帮你做一个专属粉丝主页。你的名字、你的故事、你拍的照片，全在一个链接里。
+        </div>
+
+        <!-- 二、项目定位 -->
+        <h2><span class="n">二</span> 项目定位</h2>
+        <table>
+            <tr><th>维度</th><th>说明</th></tr>
+            <tr><td>目标客户</td><td>有自己偶像的追星粉丝（楼丝、姿迷等）</td></tr>
+            <tr><td>核心价值</td><td>不用写代码，拥有专属个人粉丝站</td></tr>
+            <tr><td>定价策略</td><td>前期免费/低价攒案例，后期按难度收费</td></tr>
+            <tr><td>服务周期</td><td>客户填表 → 1-2天交付</td></tr>
+            <tr><td>售后</td><td>上线后免费修改一次</td></tr>
+        </table>
+
+        <!-- 三、已有成品 -->
+        <h2><span class="n">三</span> 已有成品展示</h2>
+        <table>
+            <tr><th>页面</th><th>偶像</th><th>主题色</th><th>链接</th></tr>
+            <tr><td>月月的小宇宙</td><td>马嘉祺（时代少年团）</td><td>月白星紫 💜</td><td><a href="https://yue-eee.github.io/yue-page/">点击查看</a></td></tr>
+            <tr><td>逆光而行</td><td>孙燕姿</td><td>深空蓝 🌻</td><td><a href="https://yue-eee.github.io/yue-page/sunyanzi.html">点击查看</a></td></tr>
+        </table>
+
+        <!-- 四、页面包含模块 -->
+        <h2><span class="n">四</span> 页面包含哪些内容</h2>
+        <ul>
+            <li><strong>Hero 头部</strong> — 偶像配色主题、Slogan、漂浮动画</li>
+            <li><strong>自我介绍</strong> — 昵称、粉丝属性、追星时长、个性标签</li>
+            <li><strong>故事模块</strong> — 1-4 个追星故事卡片 + 照片展示</li>
+            <li><strong>喜欢理由</strong> — 2-4 个理由卡片（为什么喜欢Ta）</li>
+            <li><strong>联系方式</strong> — 微信二维码等，按需展示</li>
+            <li><strong>页脚</strong> — Slogan + 署名</li>
+        </ul>
+        <p style="font-size:13px;color:var(--soft);">每个页面的配色、图标、主题均根据客户偶像的粉丝属性定制。</p>
+
+        <!-- 五、交付流程 -->
+        <h2><span class="n">五</span> 交付流程</h2>
+        <div class="flow">
+            <span class="flow-step">📋 客户填信息卡</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">📸 客户提供照片</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">💻 1-2天制作</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">🔗 交付链接</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">✅ 确认上线</span>
+        </div>
+        <p style="text-align:center;font-size:12px;color:var(--soft);margin-top:8px;">链接永久有效 • 微信/微博/朋友圈直接发</p>
+
+        <!-- 六、客户需要提供什么 -->
+        <h2><span class="n">六</span> 客户需要提供什么</h2>
+        <table>
+            <tr><th>类型</th><th>内容</th><th>必填？</th></tr>
+            <tr><td>基本信息</td><td>昵称、喜欢谁、粉丝名、多久、Slogan</td><td>✅ 必填</td></tr>
+            <tr><td>风格偏好</td><td>色调、风格、头像</td><td>选填</td></tr>
+            <tr><td>照片</td><td>1-4张个人照片，备注场景</td><td>选填（无照片用氛围图代替）</td></tr>
+            <tr><td>联系方式</td><td>微信/微博等想公开的账号</td><td>选填</td></tr>
+        </table>
+
+        <div class="highlight-box">
+            <strong>客户信息卡链接：</strong><a href="https://yue-eee.github.io/yue-page/order-form.html">https://yue-eee.github.io/yue-page/order-form.html</a><br>
+            客户打开链接，直接打字填写，点「一键复制」发给你即可。
+        </div>
+
+        <!-- 七、技术说明 -->
+        <h2><span class="n">七</span> 技术说明</h2>
+        <table>
+            <tr><th>项目</th><th>说明</th></tr>
+            <tr><td>网页格式</td><td>纯 HTML + CSS + JS 单文件</td></tr>
+            <tr><td>托管平台</td><td>GitHub Pages（免费、永久）</td></tr>
+            <tr><td>链接格式</td><td>https://yue-eee.github.io/xxx/</td></tr>
+            <tr><td>适配设备</td><td>手机 / 平板 / 电脑 均自适应</td></tr>
+            <tr><td>维护方式</td><td>本地编辑 → 推送 GitHub → 自动上线</td></tr>
+            <tr><td>可扩展</td><td>支持绑定自定义域名</td></tr>
+        </table>
+
+        <!-- 八、宣传 -->
+        <h2><span class="n">八</span> 宣传推广</h2>
+        <table>
+            <tr><th>渠道</th><th>方式</th><th>优先级</th></tr>
+            <tr><td>朋友圈</td><td>发海报截图 + 个人主页链接</td><td>🥇 首发</td></tr>
+            <tr><td>粉丝群（微信/QQ）</td><td>姐妹互助话术，先免费做几个</td><td>🥈 重点</td></tr>
+            <tr><td>微博超话</td><td>成品页截图 + 信息卡链接</td><td>🥉 后续</td></tr>
+            <tr><td>小红书</td><td>图文笔记展示案例</td><td>🥉 后续</td></tr>
+            <tr><td>抖音</td><td>短视频展示页面效果</td><td>备选</td></tr>
+        </table>
+
+        <div class="highlight-box">
+            <strong>宣传海报：</strong><a href="https://yue-eee.github.io/yue-page/poster.html">https://yue-eee.github.io/yue-page/poster.html</a><br>
+            手机打开截图即可作为宣传图使用。
+        </div>
+
+        <!-- 九、项目文件 -->
+        <h2><span class="n">九</span> 项目文件清单</h2>
+        <table>
+            <tr><th>文件名</th><th>用途</th><th>标签</th></tr>
+            <tr><td>index.html</td><td>马嘉祺粉丝主页（成品展示）</td><td><span class="badge badge-purple">案例</span></td></tr>
+            <tr><td>sunyanzi.html</td><td>孙燕姿粉丝主页（成品展示）</td><td><span class="badge badge-purple">案例</span></td></tr>
+            <tr><td>order-form.html</td><td>客户信息卡（发给客户填）</td><td><span class="badge badge-blue">工具</span></td></tr>
+            <tr><td>project-book.html</td><td>本项目说明书</td><td><span class="badge badge-green">文档</span></td></tr>
+            <tr><td>poster.html</td><td>宣传海报页面</td><td><span class="badge badge-blue">工具</span></td></tr>
+            <tr><td>template.md</td><td>网页指令卡（内部使用）</td><td><span class="badge badge-green">文档</span></td></tr>
+            <tr><td>客户信息卡.md</td><td>客户信息卡源文件</td><td><span class="badge badge-green">文档</span></td></tr>
+        </table>
+
+        <!-- 十、下一步 -->
+        <h2><span class="n">十</span> 下一步计划</h2>
+        <ul>
+            <li><strong>攒案例</strong> — 免费帮前 3-5 个姐妹做，积累不同偶像的成品</li>
+            <li><strong>跑流程</strong> — 验证「客户填表→制作→交付」全流程</li>
+            <li><strong>定价格</strong> — 根据制作时长和客户反馈定价</li>
+            <li><strong>买域名</strong> — 业务稳定后绑定自定义域名</li>
+        </ul>
+
+        <div class="footer">
+            月月 · 追星五年 · 帮姐妹做主页 💜
+        </div>
+    </div>
+</body>
+</html>
